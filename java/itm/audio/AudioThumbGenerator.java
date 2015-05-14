@@ -142,7 +142,7 @@ public class AudioThumbGenerator {
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
 
         AudioFormat originalFormat = format;
-        System.out.println(format.toString());
+        System.out.println(format.getFrameRate());
 
         // http://www.javazoom.net/vorbisspi/documents.html
         int nominalbitrate = 1;
@@ -153,7 +153,6 @@ public class AudioThumbGenerator {
                 Map props = ((TAudioFileFormat) baseFileFormat).properties();
                 // Nominal bitrate in bps
                 nominalbitrate = ((Integer) props.get("ogg.bitrate.nominal.bps")).intValue();
-                System.out.println(nominalbitrate);
             }}
             catch(Exception e)
             {
@@ -171,7 +170,6 @@ public class AudioThumbGenerator {
 
         // Update the format and info variables for the transcoded data
         format = audioInputStream.getFormat();
-        System.out.println(format.getFrameSize());
 
         //from http://stackoverflow.com/questions/7546010/obtaining-an-audioinputstream-upto-some-x-bytes-from-the-original-cutting-an-au
         //http://stackoverflow.com/questions/23701339/converting-ogg-to-wav-doesnt-work-although-listed-as-available-format
@@ -180,7 +178,16 @@ public class AudioThumbGenerator {
         //OGG has to be read in bytes...
         //so we need to calculate how many bytes are n seconds
 
+        //http://www.java-forum.org/allgemeine-java-themen/111606-pcm-wav-schreiben-bzw-ogg-vorbis-wav.html
         long framesOfAudioToCopy = thumbNailLength * (int) format.getFrameRate();
+
+        AudioInputStream shortenedStream = null;
+
+        shortenedStream = new AudioInputStream(audioInputStream, format, framesOfAudioToCopy);
+
+        WaveFileWriter writer = new WaveFileWriter();
+        writer.write(shortenedStream, AudioFileFormat.Type.WAVE, outputFile);
+
         if(originalFormat.getEncoding().toString().toLowerCase().contains("vorbis")){
             System.out.println("!!!!!!!");
 
@@ -197,23 +204,20 @@ public class AudioThumbGenerator {
             final byte [] buffer = new byte [4096];
             int n;
 
-            final FileOutputStream fos = new FileOutputStream("test.pcm");
+            //use a temporary file... :-(
+            File output_temp = new File(output, input.getName() + ".wav" + "pcm.temp");
+
+            final FileOutputStream fos = new FileOutputStream(output_temp);
             while(-1 != (n = din.read(buffer))) {
                 fos.write(buffer, 0, n);
             }
             fos.close();
 
-            final AudioInputStream pcmIn = new AudioInputStream(new FileInputStream("test.pcm"), decodedFormat, 50000);
-            AudioSystem.write(pcmIn, AudioFileFormat.Type.WAVE, new FileOutputStream("test.wav"));
+            final AudioInputStream pcmIn = new AudioInputStream(new FileInputStream(output_temp), decodedFormat, 44100*thumbNailLength);
+            AudioSystem.write(pcmIn, AudioFileFormat.Type.WAVE, outputFile);
+
+            output_temp.delete();
         }
-
-
-        AudioInputStream shortenedStream = null;
-
-        // shortenedStream = new AudioInputStream(audioInputStream, format, framesOfAudioToCopy);
-
-        WaveFileWriter writer = new WaveFileWriter();
-        writer.write(audioInputStream, AudioFileFormat.Type.WAVE, outputFile);
 
         return outputFile;
     }
