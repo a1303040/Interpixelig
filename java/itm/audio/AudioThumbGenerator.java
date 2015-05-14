@@ -10,10 +10,12 @@ package itm.audio;
 
 import com.sun.media.sound.WaveFileWriter;
 import javazoom.jl.converter.WaveFile;
+import org.tritonus.share.sampled.file.TAudioFileFormat;
 
 import javax.sound.sampled.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * This class creates acoustic thumbnails from various types of audio files. It
@@ -136,30 +138,82 @@ public class AudioThumbGenerator {
         } catch (UnsupportedAudioFileException e) {
             e.printStackTrace();
         }
-
         AudioFormat format = audioInputStream.getFormat();
-        AudioFormat pcm =
-                new AudioFormat(format.getSampleRate(), 16,
-                        format.getChannels(), true, false);
-        // Get a wrapper stream around the input stream that does the
-        // transcoding for us.
-        audioInputStream = AudioSystem.getAudioInputStream(pcm, audioInputStream);
+        DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+
+        AudioFormat originalFormat = format;
+        System.out.println(format.toString());
+
+        // http://www.javazoom.net/vorbisspi/documents.html
+        int nominalbitrate = 1;
+        try {
+            // Get AudioFileFormat from given file.
+            AudioFileFormat baseFileFormat = AudioSystem.getAudioFileFormat(input);
+            if (baseFileFormat instanceof TAudioFileFormat) {
+                Map props = ((TAudioFileFormat) baseFileFormat).properties();
+                // Nominal bitrate in bps
+                nominalbitrate = ((Integer) props.get("ogg.bitrate.nominal.bps")).intValue();
+                System.out.println(nominalbitrate);
+            }}
+            catch(Exception e)
+            {
+            }
+
+        // If format not supported directly
+        if (!AudioSystem.isLineSupported(info)) {
+
+            // get decoded format
+            AudioFormat pcm = new AudioFormat(format.getSampleRate(), 16, format.getChannels(), true, false);
+
+            // get decoded audio input stream
+            audioInputStream = AudioSystem.getAudioInputStream(pcm, audioInputStream);
+        }
+
         // Update the format and info variables for the transcoded data
         format = audioInputStream.getFormat();
+        System.out.println(format.getFrameSize());
 
         //from http://stackoverflow.com/questions/7546010/obtaining-an-audioinputstream-upto-some-x-bytes-from-the-original-cutting-an-au
         //http://stackoverflow.com/questions/23701339/converting-ogg-to-wav-doesnt-work-although-listed-as-available-format
 
         //copy first n seconds
-        long framesOfAudioToCopy = thumbNailLength * (int) format.getFrameRate();
+        //OGG has to be read in bytes...
+        //so we need to calculate how many bytes are n seconds
 
-        //new shortened audiostream
+        long framesOfAudioToCopy = thumbNailLength * (int) format.getFrameRate();
+        if(originalFormat.getEncoding().toString().toLowerCase().contains("vorbis")){
+            System.out.println("!!!!!!!");
+
+            AudioInputStream in = null;
+            try {
+                in = AudioSystem.getAudioInputStream(input);
+            } catch (UnsupportedAudioFileException e) {
+                e.printStackTrace();
+            }
+            final AudioFormat baseFormat = in.getFormat();
+            final AudioFormat decodedFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, baseFormat.getSampleRate(), 16, baseFormat.getChannels(), baseFormat.getChannels() * 2, baseFormat.getSampleRate(), false);
+            final AudioInputStream din = AudioSystem.getAudioInputStream(decodedFormat, in);
+
+            final byte [] buffer = new byte [4096];
+            int n;
+
+            final FileOutputStream fos = new FileOutputStream("test.pcm");
+            while(-1 != (n = din.read(buffer))) {
+                fos.write(buffer, 0, n);
+            }
+            fos.close();
+
+            final AudioInputStream pcmIn = new AudioInputStream(new FileInputStream("test.pcm"), decodedFormat, 50000);
+            AudioSystem.write(pcmIn, AudioFileFormat.Type.WAVE, new FileOutputStream("test.wav"));
+        }
+
+
         AudioInputStream shortenedStream = null;
 
-        shortenedStream = new AudioInputStream(audioInputStream, format, framesOfAudioToCopy);
+        // shortenedStream = new AudioInputStream(audioInputStream, format, framesOfAudioToCopy);
 
         WaveFileWriter writer = new WaveFileWriter();
-        writer.write(shortenedStream, AudioFileFormat.Type.WAVE, outputFile);
+        writer.write(audioInputStream, AudioFileFormat.Type.WAVE, outputFile);
 
         return outputFile;
     }
