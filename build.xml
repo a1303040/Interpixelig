@@ -118,7 +118,7 @@
     <!-- set default values for properties / overwrite via commandline! -->
     <property name="input" location="media/img/" />
     <property name="output" location="test/" />
-    <property name="rotation" location="90" />
+    <property name="rotation" value="90" />
     
     <mkdir dir="${output}" />
     <java classname="itm.image.ImageThumbnailGenerator">
