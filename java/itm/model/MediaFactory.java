@@ -5,6 +5,7 @@ package itm.model;
     (c) University of Vienna 2009-2015
 *******************************************************************************/
 
+import itm.audio.AudioMetadataGenerator;
 import itm.image.ImageMetadataGenerator;
 import itm.image.ImageThumbnailGenerator;
 
@@ -137,6 +138,8 @@ public class MediaFactory
 		// overwrite if not required
 
 		// step 2.3 create audio metadata
+		AudioMetadataGenerator amg = new AudioMetadataGenerator();
+		ret.addAll(img.batchProcessImages(audioDir, metadataDir, false));
 
 		// step 3.1: create video thumbnails, do not overwrite if not required
 
@@ -188,6 +191,10 @@ public class MediaFactory
 		if ((ext.equals("jpg") || ext.equals("gif") || ext.equals("png") || ext
 				.equals("bmp"))) {
 			return new ImageMedia(f);
+		}
+		// If passed file is a mp3/ogg/wav: create a new audio object
+		if ((ext.equals("mp3") || ext.equals("ogg") || ext.equals("wav"))) {
+			return new AudioMedia(f);
 		}
 
 		throw new IOException(
