@@ -126,7 +126,7 @@ public class AudioPlayer {
 
         // Move the data until done or there is an error.
         try {
-            int bytesRead = 0;
+            int bytesRead;
             while ((bytesRead = audio.read(buffer, 0, buffer.length)) >= 0) {
                 line.write(buffer, 0, bytesRead);
             }
