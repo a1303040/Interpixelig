@@ -8,6 +8,9 @@ package itm.image;
 import itm.model.ImageMedia;
 import itm.model.MediaFactory;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +23,8 @@ import java.util.ArrayList;
     
     If the input file or the output directory do not exist, an exception is thrown.
 */
-public class ImageMetadataGenerator {
+public class ImageMetadataGenerator 
+{
 
     /**
         Constructor.
@@ -39,12 +43,15 @@ public class ImageMetadataGenerator {
     */
     public ArrayList<ImageMedia> batchProcessImages( File input, File output, boolean overwrite ) throws IOException
     {
-        if ( ! input.exists() ) 
+        if ( ! input.exists() ) {
             throw new IOException( "Input file " + input + " was not found!" );
-        if ( ! output.exists() ) 
+        }
+        if ( ! output.exists() ) {
             throw new IOException( "Output directory " + output + " not found!" );
-        if ( ! output.isDirectory() ) 
+        }
+        if ( ! output.isDirectory() ) {
             throw new IOException( output + " is not a directory!" );
+        }
 
         ArrayList<ImageMedia> ret = new ArrayList<ImageMedia>();
 
@@ -57,17 +64,17 @@ public class ImageMetadataGenerator {
                     ret.add( result );
                 } catch ( Exception e0 ) {
                     System.err.println( "Error converting " + input + " : " + e0.toString() );
-                    }
-                 }
-            } else {
+                }
+            }
+        } else {
                 try {
                     ImageMedia result = processImage( input, output, overwrite );
                     System.out.println( "converted " + input + " to " + output );
                     ret.add( result );
                 } catch ( Exception e0 ) {
                     System.err.println( "Error converting " + input + " : " + e0.toString() );
-                    }
-            }
+                }
+        }
         return ret;
     }    
     
@@ -80,25 +87,30 @@ public class ImageMetadataGenerator {
     */
     protected ImageMedia processImage( File input, File output, boolean overwrite ) throws IOException, IllegalArgumentException
     {
-        if ( ! input.exists() ) 
+        if ( ! input.exists() ) {
             throw new IOException( "Input file " + input + " was not found!" );
-        if ( input.isDirectory() ) 
+        }
+        if ( input.isDirectory() ) {
             throw new IOException( "Input file " + input + " is a directory!" );
-        if ( ! output.exists() ) 
+        }
+        if ( ! output.exists() ) {
             throw new IOException( "Output directory " + output + " not found!" );
-        if ( ! output.isDirectory() ) 
+        }
+        if ( ! output.isDirectory() ) {
             throw new IOException( output + " is not a directory!" );
+        }
 
         // create outputfilename and check whether thumb already exists. All image 
         // metadata files have to start with "img_" -  this is used by the mediafactory!
         File outputFile = new File( output, "img_" + input.getName() + ".txt" );
-        if ( outputFile.exists() ) 
+        if ( outputFile.exists() ) {
             if ( ! overwrite ) {
                 // load from file
                 ImageMedia media = new ImageMedia();
                 media.readFromFile( outputFile );
                 return media;
                 }
+        }
 
 
         // get metadata and store it to media object
@@ -109,22 +121,45 @@ public class ImageMetadataGenerator {
         // ***************************************************************
         
         // load the input image
+        BufferedImage img = null;
+        img = ImageIO.read(input);
+        if (img == null)
+            throw new IOException("Input image " + input + " is corrupt or not a supported image type!");
        
-        // set width and height of the image  
+        // set width and height of the image
+        media.setWidth(img.getWidth());
+        media.setHeight(img.getHeight());
 
         // add a tag "image" to the media
+        media.addTag("image");
 
-        // add a tag corresponding to the filename extension of the file to the media 
+        // add a tag corresponding to the filename extension of the file to the media
+        String extension = "";
+        int i = input.getName().lastIndexOf('.');
+        if (i > 0) {
+            extension = input.getName().substring(i+1);
+        }
+        media.addTag(extension);
         
         // set orientation
+        media.setOrientation((img.getWidth() > img.getHeight()) ? 0 : 1);
 
         // if there is a colormodel:
-        // set color space type
-        // set pixel size
-        // set transparency
-        // set number of (color) components        
+        ColorModel colorModel = img.getColorModel();
+        if (colorModel != null) {
+            // set color space type
+            media.setColorSpaceType(colorModel.getColorSpace().getType());
+            // set pixel size
+            media.setPixelSize(colorModel.getPixelSize());
+            // set transparency
+            media.setTransparency(colorModel.getTransparency());
+            // set number of (color) components
+            media.setNumImgComponents(colorModel.getNumComponents());
+            media.setNumColorComponents(colorModel.getNumColorComponents());
+        }
 
         // store meta data
+        media.writeToFile(outputFile);
 
         return media;
     }
@@ -139,7 +174,7 @@ public class ImageMetadataGenerator {
             System.out.println( "usage: java itm.image.ImageMetadataGenerator <input-image> <output-directory>" );
             System.out.println( "usage: java itm.image.ImageMetadataGenerator <input-directory> <output-directory>" );
             System.exit( 1 );
-            }
+        }
         File fi = new File( args[0] );
         File fo = new File( args[1] );
         ImageMetadataGenerator img = new ImageMetadataGenerator();
