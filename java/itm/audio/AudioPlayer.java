@@ -127,11 +127,8 @@ public class AudioPlayer {
         // Move the data until done or there is an error.
         try {
             int bytesRead = 0;
-            while (bytesRead >= 0) {
-                bytesRead = audio.read(buffer, 0, buffer.length);
-                if (bytesRead >= 0) {
-                    line.write(buffer, 0, bytesRead);
-                }
+            while ((bytesRead = audio.read(buffer, 0, buffer.length)) >= 0) {
+                line.write(buffer, 0, bytesRead);
             }
         } catch (IOException e) {
             e.printStackTrace();
