@@ -165,7 +165,7 @@
 <target name="AudioThumbGenerator" depends="compile" description="test the audio thumbnail generator. Example: ant.bat AudioThumbGenerator -Dinput=media/audio/ -Doutput=test/ -Dlength=10">
 <!-- set default values for properties / overwrite via commandline! -->
 <property name="input" location="media/audio/" />
-<property name="output" location="result/" />
+<property name="output" location="test/" />
 <property name="length" location="10" />
 
 <mkdir dir="${output}" />
