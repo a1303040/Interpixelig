@@ -10,10 +10,12 @@ package itm.audio;
 
 import com.sun.media.sound.WaveFileWriter;
 import javazoom.jl.converter.WaveFile;
+import org.tritonus.share.sampled.file.TAudioFileFormat;
 
 import javax.sound.sampled.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * This class creates acoustic thumbnails from various types of audio files. It
@@ -54,7 +56,7 @@ public class AudioThumbGenerator {
         if (!output.isDirectory())
             throw new IOException(output + " is not a directory!");
 
-        ArrayList<File> ret = new ArrayList<File>();
+        ArrayList<File> ret = new ArrayList<>();
 
         if (input.isDirectory()) {
             File[] files = input.listFiles();
@@ -119,84 +121,58 @@ public class AudioThumbGenerator {
         // Fill in your code here!
         // ***************************************************************
 
+        // sources
+        // http://stackoverflow.com/questions/7546010/obtaining-an-audioinputstream-upto-some-x-bytes-from-the-original-cutting-an-au
+        // http://stackoverflow.com/questions/23701339/converting-ogg-to-wav-doesnt-work-although-listed-as-available-format
+        // http://www.java-forum.org/allgemeine-java-themen/111606-pcm-wav-schreiben-bzw-ogg-vorbis-wav.html
+
         // load the input audio file
+
+        AudioInputStream in = null;
+        try {
+            in = AudioSystem.getAudioInputStream(input);
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        }
+        AudioFormat format = in.getFormat();
+        AudioFormat originalFormat = format;
+
+        // transcode
+        AudioFormat pcm = new AudioFormat(format.getSampleRate(), 16, format.getChannels(), true, false);
+        AudioInputStream audioInputStream;
+        audioInputStream = AudioSystem.getAudioInputStream(pcm, in);
+        format = audioInputStream.getFormat();
 
         // cut the audio data in the stream to a given length
 
+        long framesOfAudioToCopy = thumbNailLength * (int) format.getFrameRate();
+        AudioInputStream shortenedStream = new AudioInputStream(audioInputStream, format, framesOfAudioToCopy);
+
         // save the acoustic thumbnail as WAV file
 
+        WaveFileWriter writer = new WaveFileWriter();
+        writer.write(shortenedStream, AudioFileFormat.Type.WAVE, outputFile);
 
-        // from http://docs.oracle.com/javase/tutorial/sound/converters.html
+        // only for OGG
+        if (originalFormat.getEncoding().toString().toLowerCase().contains("vorbis")) {
+            final byte[] buffer = new byte[4096];
+            int n;
 
-        // TODO support ogg
-        AudioInputStream audioInputStream = null;
-        try {
-            audioInputStream = AudioSystem.getAudioInputStream(input);
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-            System.out.println(e.getStackTrace());
+            //use a temporary file...
+            File output_temp = new File(output, input.getName() + ".wav" + "pcm.temp");
+            final FileOutputStream fos = new FileOutputStream(output_temp);
+
+            while (-1 != (n = audioInputStream.read(buffer))) {
+                fos.write(buffer, 0, n);
+            }
+            fos.close();
+
+            // cut to length
+            final AudioInputStream pcmIn = new AudioInputStream(new FileInputStream(output_temp), pcm, 44100 * thumbNailLength);
+            AudioSystem.write(pcmIn, AudioFileFormat.Type.WAVE, outputFile);
+
+            output_temp.delete();
         }
-        AudioFormat format = audioInputStream.getFormat();
-        // Try to read numBytes bytes from the file.
-        AudioFormat pcm =
-                new AudioFormat(format.getSampleRate(), 16,
-                        format.getChannels(), true, false);
-        // Get a wrapper stream around the input stream that does the
-        // transcoaudioInputStreamg for us.
-        audioInputStream = AudioSystem.getAudioInputStream(pcm, audioInputStream);
-        // Update the format and info variables for the transcoded data
-        format = audioInputStream.getFormat();
-        DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
-
-        int totalFramesRead = 0;
-        int bytesPerFrame =
-                audioInputStream.getFormat().getFrameSize();
-        if (bytesPerFrame == AudioSystem.NOT_SPECIFIED) {
-            // some audio formats may have unspecified frame size
-            // in that case we may read any amount of bytes
-            bytesPerFrame = 1;
-        }
-
-        // Set an arbitrary buffer size of 1024 frames.
-        int numBytes = 1024 * bytesPerFrame;
-        byte[] audioBytes = new byte[numBytes];
-
-        int numBytesRead = 0;
-        int numFramesRead = 0;
-
-        //from http://stackoverflow.com/questions/7546010/obtaining-an-audioinputstream-upto-some-x-bytes-from-the-original-cutting-an-au
-
-            //AudioInputStream inputStream = null;
-            AudioInputStream shortenedStream = null;
-            //AudioFileFormat fileFormat = null;
-
-                //fileFormat = AudioSystem.getAudioFileFormat(input);
-                //format = fileFormat.getFormat();
-                int bytesPerSecond = format.getFrameSize() * (int) format.getFrameRate();
-                //inputStream.skip(startSecond * bytesPerSecond);
-                long framesOfAudioToCopy = thumbNailLength * (int) format.getFrameRate();
-                shortenedStream = new AudioInputStream(audioInputStream, format, framesOfAudioToCopy);
-                //File destinationFile = new File(outputFile);
-                //AudioSystem.write(shortenedStream, fileFormat.getType(), outputFile);
-
-                pcm = new AudioFormat(format.getSampleRate(), 16,
-                        format.getChannels(), true, false);
-                // Get a wrapper stream around the input stream that does the
-                // transcoaudioInputStreamg for us.
-                shortenedStream = AudioSystem.getAudioInputStream(pcm, shortenedStream);
-                // Update the format and info variables for the transcoded data
-
-
-                WaveFileWriter writer = new WaveFileWriter();
-                writer.write(shortenedStream, AudioFileFormat.Type.WAVE, outputFile);
-
-
-
-
-        //FileOutputStream fos = new FileOutputStream(outputFile);
-        //fos.write(audioBytes);
-        //fos.close();
-
 
         return outputFile;
     }
