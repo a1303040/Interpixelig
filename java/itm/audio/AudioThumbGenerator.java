@@ -128,75 +128,38 @@ public class AudioThumbGenerator {
 
         // from http://docs.oracle.com/javase/tutorial/sound/converters.html
 
-        // TODO support ogg
+        // TODO support ogg (format.getEncoding() == VORBISENC)
+
         AudioInputStream audioInputStream = null;
         try {
             audioInputStream = AudioSystem.getAudioInputStream(input);
         } catch (UnsupportedAudioFileException e) {
             e.printStackTrace();
-            System.out.println(e.getStackTrace());
         }
+
         AudioFormat format = audioInputStream.getFormat();
-        // Try to read numBytes bytes from the file.
         AudioFormat pcm =
                 new AudioFormat(format.getSampleRate(), 16,
                         format.getChannels(), true, false);
         // Get a wrapper stream around the input stream that does the
-        // transcoaudioInputStreamg for us.
+        // transcoding for us.
         audioInputStream = AudioSystem.getAudioInputStream(pcm, audioInputStream);
         // Update the format and info variables for the transcoded data
         format = audioInputStream.getFormat();
-        DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
-
-        int totalFramesRead = 0;
-        int bytesPerFrame =
-                audioInputStream.getFormat().getFrameSize();
-        if (bytesPerFrame == AudioSystem.NOT_SPECIFIED) {
-            // some audio formats may have unspecified frame size
-            // in that case we may read any amount of bytes
-            bytesPerFrame = 1;
-        }
-
-        // Set an arbitrary buffer size of 1024 frames.
-        int numBytes = 1024 * bytesPerFrame;
-        byte[] audioBytes = new byte[numBytes];
-
-        int numBytesRead = 0;
-        int numFramesRead = 0;
 
         //from http://stackoverflow.com/questions/7546010/obtaining-an-audioinputstream-upto-some-x-bytes-from-the-original-cutting-an-au
+        //http://stackoverflow.com/questions/23701339/converting-ogg-to-wav-doesnt-work-although-listed-as-available-format
 
-            //AudioInputStream inputStream = null;
-            AudioInputStream shortenedStream = null;
-            //AudioFileFormat fileFormat = null;
+        //copy first n seconds
+        long framesOfAudioToCopy = thumbNailLength * (int) format.getFrameRate();
 
-                //fileFormat = AudioSystem.getAudioFileFormat(input);
-                //format = fileFormat.getFormat();
-                int bytesPerSecond = format.getFrameSize() * (int) format.getFrameRate();
-                //inputStream.skip(startSecond * bytesPerSecond);
-                long framesOfAudioToCopy = thumbNailLength * (int) format.getFrameRate();
-                shortenedStream = new AudioInputStream(audioInputStream, format, framesOfAudioToCopy);
-                //File destinationFile = new File(outputFile);
-                //AudioSystem.write(shortenedStream, fileFormat.getType(), outputFile);
+        //new shortened audiostream
+        AudioInputStream shortenedStream = null;
 
-                pcm = new AudioFormat(format.getSampleRate(), 16,
-                        format.getChannels(), true, false);
-                // Get a wrapper stream around the input stream that does the
-                // transcoaudioInputStreamg for us.
-                shortenedStream = AudioSystem.getAudioInputStream(pcm, shortenedStream);
-                // Update the format and info variables for the transcoded data
+        shortenedStream = new AudioInputStream(audioInputStream, format, framesOfAudioToCopy);
 
-
-                WaveFileWriter writer = new WaveFileWriter();
-                writer.write(shortenedStream, AudioFileFormat.Type.WAVE, outputFile);
-
-
-
-
-        //FileOutputStream fos = new FileOutputStream(outputFile);
-        //fos.write(audioBytes);
-        //fos.close();
-
+        WaveFileWriter writer = new WaveFileWriter();
+        writer.write(shortenedStream, AudioFileFormat.Type.WAVE, outputFile);
 
         return outputFile;
     }

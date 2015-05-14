@@ -111,8 +111,6 @@ public class AudioPlayer {
             info = new DataLine.Info(SourceDataLine.class, format);
         }
 
-
-
         return din;
 	}
 
