@@ -56,7 +56,7 @@ public class AudioThumbGenerator {
         if (!output.isDirectory())
             throw new IOException(output + " is not a directory!");
 
-        ArrayList<File> ret = new ArrayList<File>();
+        ArrayList<File> ret = new ArrayList<>();
 
         if (input.isDirectory()) {
             File[] files = input.listFiles();
@@ -121,99 +121,54 @@ public class AudioThumbGenerator {
         // Fill in your code here!
         // ***************************************************************
 
+        // sources
+        // http://stackoverflow.com/questions/7546010/obtaining-an-audioinputstream-upto-some-x-bytes-from-the-original-cutting-an-au
+        // http://stackoverflow.com/questions/23701339/converting-ogg-to-wav-doesnt-work-although-listed-as-available-format
+        // http://www.java-forum.org/allgemeine-java-themen/111606-pcm-wav-schreiben-bzw-ogg-vorbis-wav.html
+
         // load the input audio file
 
-        // cut the audio data in the stream to a given length
-
-        // save the acoustic thumbnail as WAV file
-
-
-        // from http://docs.oracle.com/javase/tutorial/sound/converters.html
-
-        // TODO support ogg (format.getEncoding() == VORBISENC)
-
-        AudioInputStream audioInputStream = null;
+        AudioInputStream in = null;
         try {
-            audioInputStream = AudioSystem.getAudioInputStream(input);
+            in = AudioSystem.getAudioInputStream(input);
         } catch (UnsupportedAudioFileException e) {
             e.printStackTrace();
         }
-        AudioFormat format = audioInputStream.getFormat();
-        DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
-
+        AudioFormat format = in.getFormat();
         AudioFormat originalFormat = format;
-        System.out.println(format.getFrameRate());
 
-        // http://www.javazoom.net/vorbisspi/documents.html
-        int nominalbitrate = 1;
-        try {
-            // Get AudioFileFormat from given file.
-            AudioFileFormat baseFileFormat = AudioSystem.getAudioFileFormat(input);
-            if (baseFileFormat instanceof TAudioFileFormat) {
-                Map props = ((TAudioFileFormat) baseFileFormat).properties();
-                // Nominal bitrate in bps
-                nominalbitrate = ((Integer) props.get("ogg.bitrate.nominal.bps")).intValue();
-            }}
-            catch(Exception e)
-            {
-            }
-
-        // If format not supported directly
-        if (!AudioSystem.isLineSupported(info)) {
-
-            // get decoded format
-            AudioFormat pcm = new AudioFormat(format.getSampleRate(), 16, format.getChannels(), true, false);
-
-            // get decoded audio input stream
-            audioInputStream = AudioSystem.getAudioInputStream(pcm, audioInputStream);
-        }
-
-        // Update the format and info variables for the transcoded data
+        // transcode
+        AudioFormat pcm = new AudioFormat(format.getSampleRate(), 16, format.getChannels(), true, false);
+        AudioInputStream audioInputStream;
+        audioInputStream = AudioSystem.getAudioInputStream(pcm, in);
         format = audioInputStream.getFormat();
 
-        //from http://stackoverflow.com/questions/7546010/obtaining-an-audioinputstream-upto-some-x-bytes-from-the-original-cutting-an-au
-        //http://stackoverflow.com/questions/23701339/converting-ogg-to-wav-doesnt-work-although-listed-as-available-format
+        // cut the audio data in the stream to a given length
 
-        //copy first n seconds
-        //OGG has to be read in bytes...
-        //so we need to calculate how many bytes are n seconds
-
-        //http://www.java-forum.org/allgemeine-java-themen/111606-pcm-wav-schreiben-bzw-ogg-vorbis-wav.html
         long framesOfAudioToCopy = thumbNailLength * (int) format.getFrameRate();
+        AudioInputStream shortenedStream = new AudioInputStream(audioInputStream, format, framesOfAudioToCopy);
 
-        AudioInputStream shortenedStream = null;
-
-        shortenedStream = new AudioInputStream(audioInputStream, format, framesOfAudioToCopy);
+        // save the acoustic thumbnail as WAV file
 
         WaveFileWriter writer = new WaveFileWriter();
         writer.write(shortenedStream, AudioFileFormat.Type.WAVE, outputFile);
 
-        if(originalFormat.getEncoding().toString().toLowerCase().contains("vorbis")){
-            System.out.println("!!!!!!!");
-
-            AudioInputStream in = null;
-            try {
-                in = AudioSystem.getAudioInputStream(input);
-            } catch (UnsupportedAudioFileException e) {
-                e.printStackTrace();
-            }
-            final AudioFormat baseFormat = in.getFormat();
-            final AudioFormat decodedFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, baseFormat.getSampleRate(), 16, baseFormat.getChannels(), baseFormat.getChannels() * 2, baseFormat.getSampleRate(), false);
-            final AudioInputStream din = AudioSystem.getAudioInputStream(decodedFormat, in);
-
-            final byte [] buffer = new byte [4096];
+        // only for OGG
+        if (originalFormat.getEncoding().toString().toLowerCase().contains("vorbis")) {
+            final byte[] buffer = new byte[4096];
             int n;
 
-            //use a temporary file... :-(
+            //use a temporary file...
             File output_temp = new File(output, input.getName() + ".wav" + "pcm.temp");
-
             final FileOutputStream fos = new FileOutputStream(output_temp);
-            while(-1 != (n = din.read(buffer))) {
+
+            while (-1 != (n = audioInputStream.read(buffer))) {
                 fos.write(buffer, 0, n);
             }
             fos.close();
 
-            final AudioInputStream pcmIn = new AudioInputStream(new FileInputStream(output_temp), decodedFormat, 44100*thumbNailLength);
+            // cut to length
+            final AudioInputStream pcmIn = new AudioInputStream(new FileInputStream(output_temp), pcm, 44100 * thumbNailLength);
             AudioSystem.write(pcmIn, AudioFileFormat.Type.WAVE, outputFile);
 
             output_temp.delete();
