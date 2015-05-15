@@ -13,8 +13,7 @@
 	<property name="buildWebapp" location="webapps/itm/WEB-INF/classes" />
 	<property name="libWebapp" location="webapps/itm/WEB-INF/lib" />
 	<property name="prefuseJarWebapp" location="webapps/itm/infovis" />
-	<property name="xugglerNativeLibs" location="path-to-xuggle-lib-directory" />
-
+	<property name="xugglerNativeLibs" location="lib/xuggle-xuggler-5.4.jar" />
 
 	<!-- class path variable -->
 	<path id="project.class.path">
@@ -266,11 +265,13 @@
 <!-- set default values for properties / overwrite via commandline! -->
 <property name="input" location="media/video/panda.avi" />
 <property name="output" location="test/" />
+<property name="timespan" value="5" />
 
-<java classname="itm.video.VideoThumbnailGenerator" fork="true">
+	<java classname="itm.video.VideoThumbnailGenerator" fork="true">
 	<arg value="${input}" />
 	<arg value="${output}" />
-    <sysproperty key="ld_library_path" value="${xugglerNativeLibs}"/>
+	<arg value="${timespan}" />
+	<sysproperty key="ld_library_path" value="${xugglerNativeLibs}"/>
 	<classpath>
 		<path refid="project.class.path" />
 		<pathelement path="${build}" />
