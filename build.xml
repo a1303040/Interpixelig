@@ -224,7 +224,7 @@
 <target name="VideoFrameGrabber" depends="compile" description="test the video thumbnail generator. Example: ant.bat VideoFrameGrabber -Dinput=media/video/ -Doutput=test/">
 <!-- set default values for properties / overwrite via commandline! -->
 <property name="input" location="media/video/" />
-<property name="output" location="result/" />
+<property name="output" location="test/" />
 
 <java classname="itm.video.VideoFrameGrabber">
 	<arg value="${input}" />
