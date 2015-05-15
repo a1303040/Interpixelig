@@ -258,7 +258,7 @@ public class VideoThumbnailGenerator {
 
                             // process the video frame
 
-                            processFrame(newPic, javaImage, output);
+                            processFrame(newPic, javaImage, outputFile);
                         }
                     }
                 }
@@ -293,8 +293,8 @@ public class VideoThumbnailGenerator {
 
 
 
-    //TODO default of 5
-    public static final double SECONDS_BETWEEN_FRAMES = 5;
+    //TODO default of 1
+    public static final double SECONDS_BETWEEN_FRAMES = 1;
     public static final long NANO_SECONDS_BETWEEN_FRAMES =
             (long)(Global.DEFAULT_PTS_PER_SECOND * SECONDS_BETWEEN_FRAMES);
     private static long mLastPtsWrite = Global.NO_PTS;
@@ -314,8 +314,12 @@ public class VideoThumbnailGenerator {
             if (picture.getPts() - mLastPtsWrite >= NANO_SECONDS_BETWEEN_FRAMES)
             {
                 // Make a temorary file name
-
-                File file = new File(output, "frame_thumb.png");
+                double seconds = ((double)picture.getPts()) / Global.DEFAULT_PTS_PER_SECOND;
+                String secondsstring = Double.toString(seconds);
+                if(seconds < 10){
+                    secondsstring = "0" + secondsstring;
+                }
+                File file = new File(output.getParent(), output.getName() + secondsstring + "_thumb.png");
 
                 // write out PNG
 
@@ -323,7 +327,6 @@ public class VideoThumbnailGenerator {
 
                 // indicate file written
 
-                double seconds = ((double)picture.getPts()) / Global.DEFAULT_PTS_PER_SECOND;
                 System.out.printf("at elapsed time of %6.3f seconds wrote: %s\n",
                         seconds, file);
 
@@ -337,11 +340,6 @@ public class VideoThumbnailGenerator {
             e.printStackTrace();
         }
     }
-
-
-
-
-
 
 
 
