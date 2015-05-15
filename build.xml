@@ -263,9 +263,9 @@
 -->
 <target name="VideoThumbnailGenerator" depends="compile" description="test the video thumb generator. Example: ant.bat VideoThumbnailGenerator -Dinput=media/video/panda.avi -Doutput=test/">
 <!-- set default values for properties / overwrite via commandline! -->
-<property name="input" location="media/video/panda.avi" />
+<property name="input" location="media/video/" />
 <property name="output" location="test/" />
-<property name="timespan" value="5" />
+<property name="timespan" value="1" />
 
 	<java classname="itm.video.VideoThumbnailGenerator" fork="true">
 	<arg value="${input}" />
