@@ -122,7 +122,8 @@ public class VideoThumbnailGenerator {
 
 		// Close the writer
 
-       return VideoFrameExtractorDelegate.processVideo(input, output, overwrite, timespan);
+        // call with  argument framefrom middle false because we want to extract all frames with intervals
+       return VideoFrameExtractorDelegate.processVideo(input, output, overwrite, timespan, false);
 	}
 
 

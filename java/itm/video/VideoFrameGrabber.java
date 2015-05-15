@@ -99,6 +99,12 @@ public class VideoFrameGrabber {
 		// Fill in your code here!
 		// ***************************************************************
 
+		// EXTRACT FRAME FROM THE MIDDLE OF THE VIDEO
+        // this calls the method process video, with argument frameFromMiddle set to true
+        // so we're going to extract a frame from the middle of the video...
+        VideoFrameExtractorDelegate.processVideo(input, output, true, 1, true);
+
+
 		return outputFile;
 
 	}

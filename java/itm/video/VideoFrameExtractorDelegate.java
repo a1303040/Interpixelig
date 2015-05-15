@@ -17,7 +17,7 @@ public class VideoFrameExtractorDelegate {
             (long)(Global.DEFAULT_PTS_PER_SECOND * SECONDS_BETWEEN_FRAMES);
     private static long mLastPtsWrite = Global.NO_PTS;
 
-    static File processVideo(File input, File output, boolean overwrite, int timespan){
+    static File processVideo(File input, File output, boolean overwrite, int timespan, boolean frameFromMiddle){
 
         File outputFile = new File(output, input.getName() + "_thumb.swf");
 
@@ -50,6 +50,8 @@ public class VideoFrameExtractorDelegate {
         // query how many streams the call to open found
 
         int numStreams = container.getNumStreams();
+
+        long vidDuration = container.getDuration();
 
         // and iterate through the streams to find the first video stream
 
@@ -109,6 +111,7 @@ public class VideoFrameExtractorDelegate {
             {
                 // We allocate a new picture to get the data out of Xuggle
 
+
                 IVideoPicture picture = IVideoPicture.make(videoCoder.getPixelType(),
                         videoCoder.getWidth(), videoCoder.getHeight());
 
@@ -156,7 +159,7 @@ public class VideoFrameExtractorDelegate {
 
                         // process the video frame
 
-                        VideoFrameExtractorDelegate.processFrame(newPic, javaImage, input, output);
+                        VideoFrameExtractorDelegate.processFrame(newPic, javaImage, input, output, frameFromMiddle, vidDuration);
                     }
                 }
             }
@@ -192,7 +195,7 @@ public class VideoFrameExtractorDelegate {
 
     }
 
-    static void processFrame(IVideoPicture picture, BufferedImage image, File input, File output) {
+    static void processFrame(IVideoPicture picture, BufferedImage image, File input, File output, boolean frameFromMiddle, long vidDuration) {
         try {
             // if uninitialized, backdate mLastPtsWrite so we get the very
             // first frame
@@ -202,7 +205,37 @@ public class VideoFrameExtractorDelegate {
 
             // if it's time to write the next frame
 
-            if (picture.getPts() - mLastPtsWrite >= NANO_SECONDS_BETWEEN_FRAMES) {
+            //TODO if frameFromMiddle == true
+            //we ONLY extract the middle frame.
+            long middleofVideo = vidDuration/2;
+
+            //is getPts in millseconds?
+            //System.out.println("middleofvid" + middleofVideo);
+            //System.out.println("picture pts" + picture.getPts());
+            //make sure picture.getPts() returns a correct number.
+
+            // TODO we need to check middleofVideo within a range, middleofvideo +- epsilon
+            if (frameFromMiddle && picture.getPts() == middleofVideo){
+                double seconds = ((double) picture.getPts()) / Global.DEFAULT_PTS_PER_SECOND;
+                String secondsstring = Double.toString(seconds);
+                if (seconds < 10) {
+                    secondsstring = "0" + secondsstring;
+                }
+                File file = new File(output, input.getName() + ".MIDDLE." + secondsstring  + "_thumb.png");
+
+                // write out PNG
+
+                ImageIO.write(image, "png", file);
+
+                // indicate file written
+
+                System.out.printf("at elapsed time of %6.3f seconds wrote: %s\n",
+                        seconds, file);
+
+                // job is done; return
+            }
+
+            if (picture.getPts() - mLastPtsWrite >= NANO_SECONDS_BETWEEN_FRAMES && !frameFromMiddle) {
                 // Make a temorary file name
                 double seconds = ((double) picture.getPts()) / Global.DEFAULT_PTS_PER_SECOND;
                 String secondsstring = Double.toString(seconds);
