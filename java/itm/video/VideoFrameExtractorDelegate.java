@@ -215,6 +215,7 @@ public class VideoFrameExtractorDelegate {
             //make sure picture.getPts() returns a correct number.
 
             // TODO we need to check middleofVideo within a range, middleofvideo +- epsilon
+            // TODO I'm not sure if picutre.getPts() always returns the exact same value as middleofvideo
             if (frameFromMiddle && picture.getPts() == middleofVideo){
                 double seconds = ((double) picture.getPts()) / Global.DEFAULT_PTS_PER_SECOND;
                 String secondsstring = Double.toString(seconds);
