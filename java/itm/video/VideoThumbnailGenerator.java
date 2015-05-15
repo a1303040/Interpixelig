@@ -80,6 +80,18 @@ public class VideoThumbnailGenerator {
 		return ret;
 	}
 
+
+
+
+    //TODO default of 1
+    public static final double SECONDS_BETWEEN_FRAMES = 1;
+    public static final long NANO_SECONDS_BETWEEN_FRAMES =
+            (long)(Global.DEFAULT_PTS_PER_SECOND * SECONDS_BETWEEN_FRAMES);
+    private static long mLastPtsWrite = Global.NO_PTS;
+
+
+
+
 	/**
 	 * Processes the passed input video file and stores a thumbnail of it to the
 	 * output directory.
@@ -258,7 +270,7 @@ public class VideoThumbnailGenerator {
 
                             // process the video frame
 
-                            processFrame(newPic, javaImage, outputFile);
+                            processFrame(newPic, javaImage, input, output);
                         }
                     }
                 }
@@ -286,20 +298,14 @@ public class VideoThumbnailGenerator {
                 container = null;
             }
 
-
+            //reset our counter
+            mLastPtsWrite = Global.NO_PTS;
 
 		return outputFile;
 	}
 
 
-
-    //TODO default of 1
-    public static final double SECONDS_BETWEEN_FRAMES = 1;
-    public static final long NANO_SECONDS_BETWEEN_FRAMES =
-            (long)(Global.DEFAULT_PTS_PER_SECOND * SECONDS_BETWEEN_FRAMES);
-    private static long mLastPtsWrite = Global.NO_PTS;
-
-    private static void processFrame(IVideoPicture picture, BufferedImage image, File output)
+    private static void processFrame(IVideoPicture picture, BufferedImage image, File input, File output)
     {
         try
         {
@@ -319,7 +325,7 @@ public class VideoThumbnailGenerator {
                 if(seconds < 10){
                     secondsstring = "0" + secondsstring;
                 }
-                File file = new File(output.getParent(), output.getName() + secondsstring + "_thumb.png");
+                File file = new File(output, input.getName() + secondsstring + "_thumb.png");
 
                 // write out PNG
 
