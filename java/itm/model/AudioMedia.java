@@ -15,18 +15,18 @@ public class AudioMedia extends AbstractMedia {
 
 
     protected String encoding;
-    protected float duration;
+    protected String duration;
     protected String author;
     protected String title;
-    protected int date;
+    protected String date;
     protected String comment;
     protected String album;
     protected String track;
     protected String composer;
     protected String genre;
-    protected int frequency;
-    protected int bitrate;
-    protected int channels;
+    protected String frequency;
+    protected String bitrate;
+    protected String channels;
 
     /**
      * Constructor.
@@ -43,11 +43,11 @@ public class AudioMedia extends AbstractMedia {
     }
 
     /* GET / SET methods */
-    public float getDuration() {
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(float duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 
@@ -75,11 +75,11 @@ public class AudioMedia extends AbstractMedia {
         this.title = title;
     }
 
-    public int getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(int date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -123,27 +123,27 @@ public class AudioMedia extends AbstractMedia {
         this.genre = genre;
     }
 
-    public int getFrequency() {
+    public String getFrequency() {
         return frequency;
     }
 
-    public void setFrequency(int frequency) {
+    public void setFrequency(String frequency) {
         this.frequency = frequency;
     }
 
-    public int getBitrate() {
+    public String getBitrate() {
         return bitrate;
     }
 
-    public void setBitrate(int bitrate) {
+    public void setBitrate(String bitrate) {
         this.bitrate = bitrate;
     }
 
-    public int getChannels() {
+    public String getChannels() {
         return channels;
     }
 
-    public void setChannels(int channels) {
+    public void setChannels(String channels) {
         this.channels = channels;
     }
 
@@ -169,19 +169,45 @@ public class AudioMedia extends AbstractMedia {
         // Fill in your code here!
         // ***************************************************************
 
-        out.println("encoding: " + getEncoding());
-        out.println("duration in seconds: " + getDuration());
-        out.println("author: " + getAuthor());
-        out.println("title: " + getTitle());
-        out.println("date: " + getDate());
-        out.println("comment: " + getComment());
-        out.println("album: " + getAlbum());
-        out.println("track: " + getTrack());
-        out.println("composer: " + getComposer());
-        out.println("genre: " + getGenre());
-        out.println("frequency: " + getFrequency());
-        out.println("bitrate: " + getBitrate());
-        out.println("channels: " + getChannels());
+        if(encoding != null) {
+            out.println("encoding: " + getEncoding());
+        }
+        if(duration != null) {
+            out.println("duration in seconds: " + getDuration());
+        }
+        if(author != null) {
+            out.println("author: " + getAuthor());
+        }
+        if(title != null) {
+            out.println("title: " + getTitle());
+        }
+        if(date != null) {
+            out.println("date: " + getDate());
+        }
+        if(comment != null) {
+            out.println("comment: " + getComment());
+        }
+        if(album != null) {
+            out.println("album: " + getAlbum());
+        }
+        if(track != null) {
+            out.println("track: " + getTrack());
+        }
+        if(composer != null) {
+            out.println("composer: " + getComposer());
+        }
+        if(genre != null) {
+            out.println("genre: " + getGenre());
+        }
+        if(frequency != null) {
+            out.println("frequency: " + getFrequency());
+        }
+        if(bitrate != null) {
+            out.println("bitrate: " + getBitrate());
+        }
+        if(channels != null) {
+            out.println("channels: " + getChannels());
+        }
         
         return data.getBuffer();
     }
@@ -206,13 +232,13 @@ public class AudioMedia extends AbstractMedia {
             if (line.startsWith("encoding: "))
                 setEncoding(line.substring("encoding: ".length()));
             if (line.startsWith("duration in seconds: "))
-                setDuration(Float.parseFloat(line.substring("duration: ".length())));
+                setDuration(line.substring("duration: ".length()));
             if (line.startsWith("author: "))
                 setAuthor(line.substring("author: ".length()));
             if (line.startsWith("title: "))
                 setTitle(line.substring("title: ".length()));
             if (line.startsWith("date: "))
-                setDate(Integer.parseInt(line.substring("date: ".length())));
+                setDate(line.substring("date: ".length()));
             if (line.startsWith("comment: "))
                 setComment(line.substring("comment: ".length()));
             if (line.startsWith("album: "))
@@ -224,11 +250,11 @@ public class AudioMedia extends AbstractMedia {
             if (line.startsWith("genre: "))
                 setGenre(line.substring("genre: ".length()));
             if (line.startsWith("frequency: "))
-                setFrequency(Integer.parseInt(line.substring("frequency: ".length())));
+                setFrequency(line.substring("frequency: ".length()));
             if (line.startsWith("bitrate: "))
-                setBitrate(Integer.parseInt(line.substring("bitrate: ".length())));
+                setBitrate(line.substring("bitrate: ".length()));
             if (line.startsWith("channels: "))
-                setChannels(Integer.parseInt(line.substring("channels: ".length())));
+                setChannels(line.substring("channels: ".length()));
 
         }
     }
