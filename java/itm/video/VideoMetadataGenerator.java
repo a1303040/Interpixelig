@@ -5,7 +5,9 @@ package itm.video;
  * (c) University of Vienna 2009-2015
  *******************************************************************************/
 
+import com.xuggle.xuggler.ICodec;
 import com.xuggle.xuggler.IContainer;
+import com.xuggle.xuggler.IStreamCoder;
 import itm.model.MediaFactory;
 import itm.model.VideoMedia;
 
@@ -133,12 +135,37 @@ public class VideoMetadataGenerator {
         VideoMedia media = (VideoMedia) MediaFactory.createMedia(input);
 
         // set video and audio stream metadata
-        IContainer container = IContainer.make();
-        if (container.open(input.getAbsolutePath(), IContainer.Type.READ, null) < 0)
+        IContainer iContainer = IContainer.make();
+        if (iContainer.open(input.getAbsolutePath(), IContainer.Type.READ, null) < 0)
             throw new IllegalArgumentException("could not open file: " + input.getAbsolutePath());
-        media.setVideoLength(String.valueOf(container.getDuration() / 1000000));
+
+        // video length
+        media.setVideoLength(String.valueOf(iContainer.getDuration() / 1000000));
+
+        for (int i = 0; i < iContainer.getNumStreams(); i++) {
+            IStreamCoder iStreamCoder = iContainer.getStream(i).getStreamCoder();
+            ICodec.Type codecType = iStreamCoder.getCodecType();
+
+            if (codecType == ICodec.Type.CODEC_TYPE_VIDEO) {
+                media.setVideoWidth(Integer.toString(iStreamCoder.getWidth()));
+                media.setVideoHeight(Integer.toString(iStreamCoder.getHeight()));
+                media.setVideoFrameRate(iStreamCoder.getFrameRate().toString());
+                media.setVideoCodec(iStreamCoder.getCodec().toString());
+                media.setVideoCodecID(iStreamCoder.getCodecID().toString());
+            }
+
+            if (codecType == ICodec.Type.CODEC_TYPE_AUDIO) {
+                media.setAudioBitRate(Integer.toString(iStreamCoder.getBitRate()));
+                media.setAudioSampleRate(Integer.toString(iStreamCoder.getSampleRate()));
+                media.setAudioChannels(Integer.toString(iStreamCoder.getChannels()));
+                media.setAudioCodec(iStreamCoder.getCodec().toString());
+                media.setAudioCodecID(iStreamCoder.getCodecID().toString());
+            }
+
+        }
 
         // add video tag
+        media.addTag("video");
 
         // write metadata
         media.writeToFile(outputFile);
