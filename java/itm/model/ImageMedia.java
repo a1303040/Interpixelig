@@ -242,17 +242,17 @@ public class ImageMedia extends AbstractMedia {
             else if (line.startsWith("height: "))
                 setHeight(Integer.parseInt(line.substring("height: ".length())));
             else if (line.startsWith("numImgComponents: "))
-                setHeight(Integer.parseInt(line.substring("numImgComponents: ".length())));
+                setNumImgComponents(Integer.parseInt(line.substring("numImgComponents: ".length())));
             else if (line.startsWith("numColorComponents: "))
-                setHeight(Integer.parseInt(line.substring("numColorComponents: ".length())));
+                setNumColorComponents(Integer.parseInt(line.substring("numColorComponents: ".length())));
             else if (line.startsWith("transparency: "))
-                setHeight(Integer.parseInt(line.substring("transparency: ".length())));
+                setTransparency(Integer.parseInt(line.substring("transparency: ".length())));
             else if (line.startsWith("pixelSize: "))
-                setHeight(Integer.parseInt(line.substring("pixelSize: ".length())));
+                setPixelSize(Integer.parseInt(line.substring("pixelSize: ".length())));
             else if (line.startsWith("colorSpaceType: "))
-                setHeight(Integer.parseInt(line.substring("colorSpaceType: ".length())));
+                setColorSpaceType(Integer.parseInt(line.substring("colorSpaceType: ".length())));
             else if (line.startsWith("orientation: "))
-                setHeight(Integer.parseInt(line.substring("orientation: ".length())));
+                setOrientation(Integer.parseInt(line.substring("orientation: ".length())));
         }
     }
 }
