@@ -165,7 +165,7 @@ public class VideoMedia extends AbstractMedia {
             out.println("videoFrameRate: " + getVideoFrameRate());
         }
         if(videoLength != null) {
-            out.println("videoLength: " + getVideoLength());
+            out.println("videoLength in seconds: " + getVideoLength());
         }
         if(videoHeight != null) {
             out.println("videoHeight: " + getVideoHeight());
@@ -217,7 +217,7 @@ public class VideoMedia extends AbstractMedia {
             if (line.startsWith("videoFrameRate: "))
                 setVideoFrameRate(line.substring("videoFrameRate: ".length()));
             if (line.startsWith("videoLength: "))
-                setVideoLength(line.substring("videoLength: ".length()));
+                setVideoLength(line.substring("videoLength in seconds: ".length()));
             if (line.startsWith("videoHeight: "))
                 setVideoHeight(line.substring("videoHeight: ".length()));
             if (line.startsWith("videoWidth: "))

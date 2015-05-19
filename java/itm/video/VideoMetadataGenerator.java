@@ -5,6 +5,7 @@ package itm.video;
  * (c) University of Vienna 2009-2015
  *******************************************************************************/
 
+import com.xuggle.xuggler.IContainer;
 import itm.model.MediaFactory;
 import itm.model.VideoMedia;
 
@@ -132,11 +133,15 @@ public class VideoMetadataGenerator {
         VideoMedia media = (VideoMedia) MediaFactory.createMedia(input);
 
         // set video and audio stream metadata
-
+        IContainer container = IContainer.make();
+        if (container.open(input.getAbsolutePath(), IContainer.Type.READ, null) < 0)
+            throw new IllegalArgumentException("could not open file: " + input.getAbsolutePath());
+        media.setVideoLength(String.valueOf(container.getDuration() / 1000000));
 
         // add video tag
 
         // write metadata
+        media.writeToFile(outputFile);
 
         return media;
     }

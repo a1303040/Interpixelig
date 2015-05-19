@@ -8,6 +8,7 @@ package itm.model;
 import itm.audio.AudioMetadataGenerator;
 import itm.image.ImageMetadataGenerator;
 import itm.image.ImageThumbnailGenerator;
+import itm.video.VideoMetadataGenerator;
 
 import java.io.File;
 import java.io.IOException;
@@ -144,6 +145,8 @@ public class MediaFactory
 		// step 3.1: create video thumbnails, do not overwrite if not required
 
 		// step 3.2: create video metadata, do not overwrite if not required
+		//VideoMetadataGenerator vmg = new VideoMetadataGenerator();
+		//ret.addAll(img.batchProcessImages(videoDir, metadataDir, false));
 
 		return ret;
 	}
@@ -195,6 +198,10 @@ public class MediaFactory
 		// If passed file is a mp3/ogg/wav: create a new audio object
 		if ((ext.equals("mp3") || ext.equals("ogg") || ext.equals("wav"))) {
 			return new AudioMedia(f);
+		}
+		// If passed file is a mp3/ogg/wav: create a new audio object
+		if (ext.equals("avi") || ext.equals("swf") || ext.equals("asf") || ext.equals("flv") || ext.equals("mp4")) {
+			return new VideoMedia(f);
 		}
 
 		throw new IOException(
