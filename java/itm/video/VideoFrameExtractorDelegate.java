@@ -1,6 +1,8 @@
 package itm.video;
 
 import com.xuggle.xuggler.*;
+import com.xuggle.xuggler.video.ConverterFactory;
+import com.xuggle.xuggler.video.IConverter;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -105,12 +107,11 @@ public class VideoFrameExtractorDelegate {
         while(container.readNextPacket(packet) >= 0)
         {
 
-            // Now we have a packet, let's see if it belongs to our video strea
+            // Now we have a packet, let's see if it belongs to our video stream
 
             if (packet.getStreamIndex() == videoStreamId)
             {
                 // We allocate a new picture to get the data out of Xuggle
-
 
                 IVideoPicture picture = IVideoPicture.make(videoCoder.getPixelType(),
                         videoCoder.getWidth(), videoCoder.getHeight());
@@ -155,10 +156,11 @@ public class VideoFrameExtractorDelegate {
 
                         // convert the BGR24 to an Java buffered image
 
-                        BufferedImage javaImage = Utils.videoPictureToImage(newPic);
+                        //BufferedImage javaImage = new BufferedImage(videoCoder.getWidth(), videoCoder.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
+                        IConverter converter = ConverterFactory.createConverter(ConverterFactory.XUGGLER_BGR_24, newPic);
+                        BufferedImage javaImage = converter.toImage(newPic);
 
                         // process the video frame
-
                         VideoFrameExtractorDelegate.processFrame(newPic, javaImage, input, output, frameFromMiddle, vidDuration);
                     }
                 }
@@ -210,13 +212,13 @@ public class VideoFrameExtractorDelegate {
             long middleofVideo = vidDuration/2;
 
             //is getPts in millseconds?
-            //System.out.println("middleofvid" + middleofVideo);
-            //System.out.println("picture pts" + picture.getPts());
+            System.out.println(middleofVideo + " middleofvid");
+            System.out.println(picture.getPts() + " picture pts");
             //make sure picture.getPts() returns a correct number.
 
             // TODO we need to check middleofVideo within a range, middleofvideo +- epsilon
             // TODO I'm not sure if picutre.getPts() always returns the exact same value as middleofvideo
-            if (frameFromMiddle && picture.getPts() == middleofVideo){
+            if (frameFromMiddle && picture.getPts() == middleofVideo) {
                 double seconds = ((double) picture.getPts()) / Global.DEFAULT_PTS_PER_SECOND;
                 String secondsstring = Double.toString(seconds);
                 if (seconds < 10) {
