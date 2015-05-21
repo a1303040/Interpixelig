@@ -10,6 +10,8 @@ import com.xuggle.xuggler.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 
 /**
@@ -61,6 +63,10 @@ public class VideoThumbnailGenerator {
 						ret.add(result);
 					} catch (Exception e0) {
 						System.err.println("Error processing file " + input + " : " + e0.toString());
+
+                        StringWriter errors = new StringWriter();
+                        e0.printStackTrace(new PrintWriter(errors));
+                        System.out.println(errors.toString());
 					}
 			}
 		} else {
@@ -123,6 +129,8 @@ public class VideoThumbnailGenerator {
 		// Close the writer
 
         // call with  argument framefrom middle false because we want to extract all frames with intervals
+
+		//TODO overwrite
        return VideoFrameExtractorDelegate.processVideo(input, output, overwrite, timespan, false);
 	}
 
