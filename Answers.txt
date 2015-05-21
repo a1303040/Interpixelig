@@ -1,0 +1,81 @@
+-------------------------------------------------
+Assignment 2 - Digital Audio and Video Processing
+-------------------------------------------------
+
+Please answer the following questions in written form (1-2 A4 pages max.)
+
+-----------------------------------------------------------------
+Task 2.1: play (encoded) audio files
+-----------------------------------------------------------------
+
+* Describe the physical appearance of sound and how is it converted to digital sampled audio. Explain how sampling works and the meaning of the terms amplitude, sampling frequency, and quantization.
+
+Sound is a wave of pressure in the transporting medium (most commonly air). A higher amplitude is perceived louder. An analogue sound signal can be digitalized by sampling. With specific frequency the amplitude is measured and transformed into a digital value via quantization. A specific set of digital values available on which the amplitudes get mapped (rounded up or down). The sampling frequency should be at least double the max sound frequency (pitch) to be restorable. Thus audio files are most commonly sampled at 44.1 kHz.
+
+
+-----------------------------------------------------------------
+Task 2.2: generate "thumbnails" from audio files
+-----------------------------------------------------------------
+
+* Why do WAV files require more storage space than MP3 files?
+
+Because they are uncompressed as opposed to MP3 files.
+
+---
+
+* In the Java Sound API: what is a sample, what is a frame?
+
+A frame consists of several samples. Either a set of samples of every channel at a given point in time (PCM encoding) or even a whole series of samples and additional non-sample data.
+
+----------------------------------------------------------
+Task 2.3: extract/get audio metadata
+----------------------------------------------------------
+
+* How is volume (i.e., how loud a sound is) reflected in analog and digital audio signals? Why does it make sense to perform non-uniform quantization?
+
+Volume is reflected in the amplitude of the audio signals. The higher the amplitude, the louder the sound is perceived.
+If a signal tends to stay in an amplitude range most of the time and only rarely gets higher than that it doesn’t make sense to use a lot of bytes on the rarely used amplitude values. Thus the number of bytes used for the common range can be increased while the rarely used amplitudes can be sampled with a lower resolution.
+
+---
+
+* What is Pulse Code Modulation (PCM)?
+
+Sampling an audio signal in uniform intervals and quantizing the samples to the nearest value of a specific digital raster.
+
+----------------------------------------------------------
+Task 2.5: extract frames from video files
+----------------------------------------------------------
+
+* What is (de-)multiplexing? What is a codec?
+
+Multiplexing is combining several signals to one, to allow sharing a medium. Afterwards they can be separated into different signals again via demultiplexing.
+
+A codec is a program to encode a signal for transmission, storage or encryption and decode it for playback or editing. For example a analog signal can be converted into a digital signal with a codec.
+
+---
+
+* In what color space are images usually represented in video files? What color space is usually used for computer images?
+
+The YCbCr color space is usually used in video files, whereas the sRGB color space is most commonly used for images.
+
+----------------------------------------------------------
+Task 2.6: video thumbnail
+----------------------------------------------------------
+
+* What is video transcoding?
+
+It is the conversion from one encoding to another.
+
+---
+
+* Briefly describe and compare the video codecs we used in this assignment.
+
+
+
+---
+
+* How does changing the configuration of the ImageCompare Object affect the thumbnail?
+
+Increasing the threshold reduces the number of frames used in the thumbnail, thus making a shorter video. Reducing it has the opposite effect, to the point where only frames with exactly the same brightness value in all map areas are not included.
+Reducing the size of the map areas increases sensitivity to changes and should result in more frames included in the thumbnail.
+
