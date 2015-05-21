@@ -10,16 +10,15 @@ import java.io.File;
 
 
 //TODO we might want to factor this into another class
-
 public class VideoFrameExtractorDelegate {
 
     //TODO default of 1
     public static final double SECONDS_BETWEEN_FRAMES = 1;
     public static final long NANO_SECONDS_BETWEEN_FRAMES =
-            (long)(Global.DEFAULT_PTS_PER_SECOND * SECONDS_BETWEEN_FRAMES);
+            (long) (Global.DEFAULT_PTS_PER_SECOND * SECONDS_BETWEEN_FRAMES);
     private static long mLastPtsWrite = Global.NO_PTS;
 
-    static File processVideo(File input, File output, boolean overwrite, int timespan, boolean frameFromMiddle){
+    static File processVideo(File input, File output, boolean overwrite, int timespan, boolean frameFromMiddle) {
 
         File outputFile = new File(output, input.getName() + "_thumb.swf");
 
@@ -59,8 +58,7 @@ public class VideoFrameExtractorDelegate {
 
         int videoStreamId = -1;
         IStreamCoder videoCoder = null;
-        for(int i = 0; i < numStreams; i++)
-        {
+        for (int i = 0; i < numStreams; i++) {
             // find the stream object
 
             IStream stream = container.getStream(i);
@@ -69,8 +67,7 @@ public class VideoFrameExtractorDelegate {
 
             IStreamCoder coder = stream.getStreamCoder();
 
-            if (coder.getCodecType() == ICodec.Type.CODEC_TYPE_VIDEO)
-            {
+            if (coder.getCodecType() == ICodec.Type.CODEC_TYPE_VIDEO) {
                 videoStreamId = i;
                 videoCoder = coder;
                 break;
@@ -78,7 +75,7 @@ public class VideoFrameExtractorDelegate {
         }
 
         if (videoStreamId == -1)
-            throw new RuntimeException("could not find video stream in container: "+filename);
+            throw new RuntimeException("could not find video stream in container: " + filename);
 
         // Now we have found the video stream in this file.  Let's open up
         // our decoder so it can do work
@@ -88,8 +85,7 @@ public class VideoFrameExtractorDelegate {
                     "could not open video decoder for container: " + filename);
 
         IVideoResampler resampler = null;
-        if (videoCoder.getPixelType() != IPixelFormat.Type.BGR24)
-        {
+        if (videoCoder.getPixelType() != IPixelFormat.Type.BGR24) {
             // if this stream is not in BGR24, we're going to need to
             // convert it.  The VideoResampler does that for us.
 
@@ -104,21 +100,18 @@ public class VideoFrameExtractorDelegate {
         // Now, we start walking through the container looking at each packet.
 
         IPacket packet = IPacket.make();
-        while(container.readNextPacket(packet) >= 0)
-        {
+        while (container.readNextPacket(packet) >= 0) {
 
             // Now we have a packet, let's see if it belongs to our video stream
 
-            if (packet.getStreamIndex() == videoStreamId)
-            {
+            if (packet.getStreamIndex() == videoStreamId) {
                 // We allocate a new picture to get the data out of Xuggle
 
                 IVideoPicture picture = IVideoPicture.make(videoCoder.getPixelType(),
                         videoCoder.getWidth(), videoCoder.getHeight());
 
                 int offset = 0;
-                while(offset < packet.getSize())
-                {
+                while (offset < packet.getSize()) {
                     // Now, we decode the video, checking for any errors.
 
                     int bytesDecoded = videoCoder.decodeVideo(picture, packet, offset);
@@ -131,16 +124,14 @@ public class VideoFrameExtractorDelegate {
                     // you should always check if you got a complete picture from
                     // the decode.
 
-                    if (picture.isComplete())
-                    {
+                    if (picture.isComplete()) {
                         IVideoPicture newPic = picture;
 
                         // If the resampler is not null, it means we didn't get the
                         // video in BGR24 format and need to convert it into BGR24
                         // format.
 
-                        if (resampler != null)
-                        {
+                        if (resampler != null) {
                             // we must resample
                             newPic = IVideoPicture.make(
                                     resampler.getOutputPixelFormat(), picture.getWidth(),
@@ -164,12 +155,11 @@ public class VideoFrameExtractorDelegate {
                         VideoFrameExtractorDelegate.processFrame(newPic, javaImage, input, output, frameFromMiddle, vidDuration);
                     }
                 }
-            }
-            else
-            {
+            } else {
                 // This packet isn't part of our video stream, so we just
                 // silently drop it.
-                do {} while(false);
+                do {
+                } while (false);
             }
         }
 
@@ -178,13 +168,11 @@ public class VideoFrameExtractorDelegate {
         // want to be invited places for Christmas, we're going to show how
         // to clean up.
 
-        if (videoCoder != null)
-        {
+        if (videoCoder != null) {
             videoCoder.close();
             videoCoder = null;
         }
-        if (container !=null)
-        {
+        if (container != null) {
             container.close();
             container = null;
         }
@@ -202,29 +190,22 @@ public class VideoFrameExtractorDelegate {
             // if uninitialized, backdate mLastPtsWrite so we get the very
             // first frame
 
-            if (mLastPtsWrite == Global.NO_PTS)
+            if (mLastPtsWrite == Global.NO_PTS) {
                 mLastPtsWrite = picture.getPts() - NANO_SECONDS_BETWEEN_FRAMES;
-
+            }
             // if it's time to write the next frame
 
             //TODO if frameFromMiddle == true
             //we ONLY extract the middle frame.
-            long middleofVideo = vidDuration/2;
+            long middleofVideo = vidDuration / 2;
 
-            //is getPts in millseconds?
-            System.out.println(middleofVideo + " middleofvid");
-            System.out.println(picture.getPts() + " picture pts");
-            //make sure picture.getPts() returns a correct number.
-
-            // TODO we need to check middleofVideo within a range, middleofvideo +- epsilon
-            // TODO I'm not sure if picutre.getPts() always returns the exact same value as middleofvideo
-            if (frameFromMiddle && picture.getPts() == middleofVideo) {
+            if (mLastPtsWrite < middleofVideo && picture.getPts() >= middleofVideo) {
                 double seconds = ((double) picture.getPts()) / Global.DEFAULT_PTS_PER_SECOND;
                 String secondsstring = Double.toString(seconds);
                 if (seconds < 10) {
                     secondsstring = "0" + secondsstring;
                 }
-                File file = new File(output, input.getName() + ".MIDDLE." + secondsstring  + "_thumb.png");
+                File file = new File(output, input.getName() + ".MIDDLE." + secondsstring + "_thumb.png");
 
                 // write out PNG
 
@@ -234,11 +215,14 @@ public class VideoFrameExtractorDelegate {
 
                 System.out.printf("at elapsed time of %6.3f seconds wrote: %s\n",
                         seconds, file);
-
-                // job is done; return
+            }
+            if (frameFromMiddle) {
+                // update last write time
+                mLastPtsWrite = picture.getPts();
             }
 
-            if (picture.getPts() - mLastPtsWrite >= NANO_SECONDS_BETWEEN_FRAMES && !frameFromMiddle) {
+
+            if (!frameFromMiddle && picture.getPts() - mLastPtsWrite >= NANO_SECONDS_BETWEEN_FRAMES) {
                 // Make a temorary file name
                 double seconds = ((double) picture.getPts()) / Global.DEFAULT_PTS_PER_SECOND;
                 String secondsstring = Double.toString(seconds);
@@ -257,9 +241,10 @@ public class VideoFrameExtractorDelegate {
                         seconds, file);
 
                 // update last write time
-
                 mLastPtsWrite += NANO_SECONDS_BETWEEN_FRAMES;
             }
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
