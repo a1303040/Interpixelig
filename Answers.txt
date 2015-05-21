@@ -70,7 +70,8 @@ It is the conversion from one encoding to another.
 
 * Briefly describe and compare the video codecs we used in this assignment.
 
-
+The codecs used in the sample media video files are: indeo3, msmpeg4 v3, cinepak and theora.
+All of them use lossy compression. Cinepak uses vector quantization as its basic algorithm whereas theora uses discrete cosine transformation.
 
 ---
 
@@ -78,4 +79,5 @@ It is the conversion from one encoding to another.
 
 Increasing the threshold reduces the number of frames used in the thumbnail, thus making a shorter video. Reducing it has the opposite effect, to the point where only frames with exactly the same brightness value in all map areas are not included.
 Reducing the size of the map areas increases sensitivity to changes and should result in more frames included in the thumbnail.
+
 
