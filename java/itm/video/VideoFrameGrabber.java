@@ -10,13 +10,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- *
  * This class creates JPEG thumbnails from from video frames grabbed from the
  * middle of a video stream It can be called with 2 parameters, an input
  * filename/directory and an output directory.
- *
+ * <p>
  * If the input file or the output directory do not exist, an exception is
  * thrown.
  */
@@ -52,10 +52,8 @@ public class VideoFrameGrabber {
      * Processes the passed input video file / video file directory and stores
      * the processed files in the output directory.
      *
-     * @param input
-     *            a reference to the input video file / input directory
-     * @param output
-     *            a reference to the output directory
+     * @param input  a reference to the input video file / input directory
+     * @param output a reference to the output directory
      */
     public ArrayList<File> batchProcessVideoFiles(File input, File output) throws IOException {
         if (!input.exists())
@@ -98,10 +96,8 @@ public class VideoFrameGrabber {
      * Processes the passed audio file and stores the processed file to the
      * output directory.
      *
-     * @param input
-     *            a reference to the input audio File
-     * @param output
-     *            a reference to the output directory
+     * @param input  a reference to the input audio File
+     * @param output a reference to the output directory
      */
     protected File processVideo(File input, File output) throws IOException, IllegalArgumentException {
         if (!input.exists())
@@ -124,10 +120,13 @@ public class VideoFrameGrabber {
         // this calls the method process video, with argument frameFromMiddle set to true
         // so we're going to extract a frame from the middle of the video...
 
-        BufferedImage image = MiddleFrameExtractor.getImage(input);
+        // this gets an array with length of 1
+        // and extracts our middle frame
+        List<BufferedImage> frames = VideoFramesExtractor.getFrames(input, -1);
 
-        if (image != null) {
-            ImageIO.write(image, "JPEG", outputFile);
+        if (!frames.isEmpty()) {
+            //write middle frame to file
+            ImageIO.write(frames.get(0), "JPEG", outputFile);
         }
 
         return outputFile;

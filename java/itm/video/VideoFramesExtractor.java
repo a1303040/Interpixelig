@@ -18,12 +18,18 @@ public class VideoFramesExtractor {
     private static long mLastPtsWrite = Global.NO_PTS;
     private static IVideoPicture oldPic = null;
 
+    /*
+     * timespan -1: only extract middle frame
+     * timespan 0: only extract differing frames
+     * timespan : extract frames in an interval of timespan (in seconds)
+     *
+     * source https://github.com/artclarke/xuggle-xuggler/blob/master/src/com/xuggle/xuggler/demos/DecodeAndCaptureFrames.jav
+     */
     static List<BufferedImage> getFrames(File input, int timespan) {
 
         ArrayList<BufferedImage> frames = new ArrayList<>();
         NANO_SECONDS_BETWEEN_FRAMES = Global.DEFAULT_PTS_PER_SECOND * timespan;
 
-        // source https://github.com/artclarke/xuggle-xuggler/blob/master/src/com/xuggle/xuggler/demos/DecodeAndCaptureFrames.java
         String filename = input.getAbsolutePath();
 
         // make sure that we can actually convert video pixel formats
@@ -41,11 +47,13 @@ public class VideoFramesExtractor {
         // query how many streams the call to open found
         int numStreams = container.getNumStreams();
 
+        // get the video duration to extract our middle frame
+        long vidDuration = container.getDuration();
+
         // and iterate through the streams to find the first video stream
         int videoStreamId = -1;
         IStreamCoder videoCoder = null;
         for (int i = 0; i < numStreams; i++) {
-
             // find the stream object
             IStream stream = container.getStream(i);
 
@@ -127,7 +135,16 @@ public class VideoFramesExtractor {
                         IConverter converter = ConverterFactory.createConverter(ConverterFactory.XUGGLER_BGR_24, newPic);
                         BufferedImage javaImage = converter.toImage(newPic);
 
-                        if (timespan == 0) {
+                        // do our work
+                        // extract middle frame
+                        if (timespan == -1) {
+                            if (newPic.getPts() >= vidDuration / 2) {
+                                frames.add(javaImage);
+                                return frames;
+                            }
+                        }
+                        // extract frames on change
+                        else if (timespan == 0) {
                             if (oldPic == null) {
                                 // add to frame
                                 frames.add(javaImage);
@@ -143,7 +160,9 @@ public class VideoFramesExtractor {
                                 }
                             }
                             oldPic = newPic;
-                        } else {
+                        }
+                        // extract in interval
+                        else {
                             //from http://www.xuggle.com/public/documentation/java/api/com/xuggle/mediatool/IMediaWriter.html
                             if (VideoFramesExtractor.acceptFrame(newPic.getPts())) {
                                 frames.add(javaImage);
@@ -153,7 +172,6 @@ public class VideoFramesExtractor {
                 }
             }
         }
-
 
         // Technically since we're exiting anyway, these will be cleaned up
         // by the garbage collector... but because we're nice people and
@@ -177,22 +195,18 @@ public class VideoFramesExtractor {
     }
 
     static boolean acceptFrame(long pts) {
-        try {
-            // if uninitialized, backdate mLastPtsWrite so we get the very
-            // first frame
-            if (mLastPtsWrite == Global.NO_PTS) {
-                mLastPtsWrite = pts - NANO_SECONDS_BETWEEN_FRAMES;
-            }
-
-            if (pts - mLastPtsWrite >= NANO_SECONDS_BETWEEN_FRAMES) {
-                // update last write time
-                mLastPtsWrite += NANO_SECONDS_BETWEEN_FRAMES;
-
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        // if uninitialized, backdate mLastPtsWrite so we get the very
+        // first frame
+        if (mLastPtsWrite == Global.NO_PTS) {
+            mLastPtsWrite = pts - NANO_SECONDS_BETWEEN_FRAMES;
         }
+
+        if (pts - mLastPtsWrite >= NANO_SECONDS_BETWEEN_FRAMES) {
+            // update last write time
+            mLastPtsWrite += NANO_SECONDS_BETWEEN_FRAMES;
+            return true;
+        }
+
         return false;
     }
 

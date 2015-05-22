@@ -126,9 +126,6 @@ public class VideoThumbnailGenerator {
         if (!output.isDirectory())
             throw new IOException(output + " is not a directory!");
 
-        // create output file and check whether it already exists.
-        //File outputFile = new File(output, input.getName() + "_thumb.swf");
-
         // ***************************************************************
         // Fill in your code here!
         // ***************************************************************
@@ -153,7 +150,6 @@ public class VideoThumbnailGenerator {
             // 1 frame per second
             final IRational fps = IRational.make(1, 1);
             writer.addVideoStream(videoStreamIndex, ourVideoStreamId, fps, frames.get(0).getWidth(), frames.get(0).getHeight());
-
 
             // loop: get the frame image, encode the image to the video stream
             int curFrame = 0;
