@@ -32,7 +32,6 @@ public class VideoFrameExtractorDelegate {
         String filename = input.getAbsolutePath();
 
         // make sure that we can actually convert video pixel formats
-
         if (!IVideoResampler.isSupported(
                 IVideoResampler.Feature.FEATURE_COLORSPACECONVERSION))
             throw new RuntimeException(
@@ -40,22 +39,18 @@ public class VideoFrameExtractorDelegate {
                             " support) for this demo to work");
 
         // create a Xuggler container object
-
         IContainer container = IContainer.make();
 
         // open up the container
-
         if (container.open(filename, IContainer.Type.READ, null) < 0)
             throw new IllegalArgumentException("could not open file: " + filename);
 
         // query how many streams the call to open found
-
         int numStreams = container.getNumStreams();
 
         long vidDuration = container.getDuration();
 
         // and iterate through the streams to find the first video stream
-
         int videoStreamId = -1;
         IStreamCoder videoCoder = null;
         for (int i = 0; i < numStreams; i++) {
@@ -64,7 +59,6 @@ public class VideoFrameExtractorDelegate {
             IStream stream = container.getStream(i);
 
             // get the pre-configured decoder that can decode this stream;
-
             IStreamCoder coder = stream.getStreamCoder();
 
             if (coder.getCodecType() == ICodec.Type.CODEC_TYPE_VIDEO) {
@@ -79,8 +73,7 @@ public class VideoFrameExtractorDelegate {
 
         // Now we have found the video stream in this file.  Let's open up
         // our decoder so it can do work
-
-        if (videoCoder.open() < 0)
+        if (videoCoder.open(null,null) < 0)
             throw new RuntimeException(
                     "could not open video decoder for container: " + filename);
 
@@ -88,7 +81,6 @@ public class VideoFrameExtractorDelegate {
         if (videoCoder.getPixelType() != IPixelFormat.Type.BGR24) {
             // if this stream is not in BGR24, we're going to need to
             // convert it.  The VideoResampler does that for us.
-
             resampler = IVideoResampler.make(
                     videoCoder.getWidth(), videoCoder.getHeight(), IPixelFormat.Type.BGR24,
                     videoCoder.getWidth(), videoCoder.getHeight(), videoCoder.getPixelType());
@@ -98,7 +90,6 @@ public class VideoFrameExtractorDelegate {
         }
 
         // Now, we start walking through the container looking at each packet.
-
         // TODO if overwrite false; if outputFile.exists do nothing
         IMediaWriter writer = null;
         File outputFile = new File(output, input.getName() + "_thumb.swf");
@@ -111,8 +102,6 @@ public class VideoFrameExtractorDelegate {
             final IRational fps = IRational.make(1, 1);
             writer.addVideoStream(videoStreamIndex, ourvideoStreamId, fps,
                     videoCoder.getWidth(), videoCoder.getHeight());
-
-            System.out.println("input" + input + "width" + videoCoder.getWidth() + "height" + videoCoder.getHeight());
         }
         IPacket packet = IPacket.make();
         while (container.readNextPacket(packet) >= 0) {
@@ -163,24 +152,18 @@ public class VideoFrameExtractorDelegate {
 
                         // convert the BGR24 to an Java buffered image
 
-                        //BufferedImage javaImage = new BufferedImage(videoCoder.getWidth(), videoCoder.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
                         IConverter converter = ConverterFactory.createConverter(ConverterFactory.XUGGLER_BGR_24, newPic);
                         BufferedImage javaImage = converter.toImage(newPic);
 
                         // process the video frame
-
                         if (frameFromMiddle) {
-                            //processFrame(newPic, javaImage, input, output, frameFromMiddle, vidDuration, timespan);
                             if (getMiddleFrame(newPic, javaImage, input, output, vidDuration) != null)
                                 return getMiddleFrame(newPic, javaImage, input, output, vidDuration);
                         } else {
                             if (timespan == 0) {
                                 if (oldPic == null) {
-                                    //set our oldpic for the first frame
-                                    System.out.println("oldPic null");
                                     VideoFrameExtractorDelegate.processFrame(newPic, javaImage, input, output, frameFromMiddle, vidDuration, timespan);
                                     writer.encodeVideo(0, javaImage, curFrame, TimeUnit.SECONDS);
-                                    System.out.println(curFrame + "curframe-firstframe");
                                     curFrame++;
                                 } else {
                                     BufferedImage oldImage = converter.toImage(oldPic);
@@ -192,7 +175,6 @@ public class VideoFrameExtractorDelegate {
                                         //save our newPic
                                         VideoFrameExtractorDelegate.processFrame(newPic, javaImage, input, output, frameFromMiddle, vidDuration, timespan);
                                         writer.encodeVideo(0, javaImage, curFrame, TimeUnit.SECONDS);
-                                        System.out.println(curFrame + "curframe-doesnotmatch");
                                         curFrame++;
                                     }
                                 }
@@ -200,11 +182,9 @@ public class VideoFrameExtractorDelegate {
                                 counter++;
                             } else {
                                 //from http://www.xuggle.com/public/documentation/java/api/com/xuggle/mediatool/IMediaWriter.html
-                                //VideoFrameExtractorDelegate.processFrame(newPic, javaImage, input, output, frameFromMiddle, vidDuration, timespan);
                                 BufferedImage image = VideoFrameExtractorDelegate.processFrame(newPic, javaImage, input, output, frameFromMiddle, vidDuration, timespan);
                                 if (image != null) {
                                     writer.encodeVideo(0, image, curFrame, TimeUnit.SECONDS);
-                                    System.out.println(curFrame + "curframe – interval");
                                     curFrame++;
                                 }
                             }
