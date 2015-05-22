@@ -15,7 +15,6 @@ import java.nio.Buffer;
 import java.util.concurrent.TimeUnit;
 
 
-//TODO we might want to factor this into another class
 public class VideoFrameExtractorDelegate {
 
     //default of 0
@@ -28,18 +27,8 @@ public class VideoFrameExtractorDelegate {
     static File processVideo(File input, File output, boolean overwrite, int timespan, boolean frameFromMiddle) {
         NANO_SECONDS_BETWEEN_FRAMES = (long) (Global.DEFAULT_PTS_PER_SECOND * timespan);
         curFrame = 0;
-        File outputFile = new File(output, input.getName() + "_thumb.swf");
-        //flv to generate
-        File file = outputFile;
 
-
-        /**
-         * !!!
-         * !!!
-         * source https://github.com/artclarke/xuggle-xuggler/blob/master/src/com/xuggle/xuggler/demos/DecodeAndCaptureFrames.java
-         * !!!
-         * !!!
-         */
+        // source https://github.com/artclarke/xuggle-xuggler/blob/master/src/com/xuggle/xuggler/demos/DecodeAndCaptureFrames.java
         String filename = input.getAbsolutePath();
 
         // make sure that we can actually convert video pixel formats
@@ -110,7 +99,11 @@ public class VideoFrameExtractorDelegate {
 
         // Now, we start walking through the container looking at each packet.
 
-        IMediaWriter writer = ToolFactory.makeWriter(outputFile.getAbsolutePath());
+        // TODO if overwrite false; if outputFile.exists do nothing
+        IMediaWriter writer = null;
+        File outputFile = new File(output, input.getName() + "_thumb.swf");
+
+        writer = ToolFactory.makeWriter(outputFile.getAbsolutePath());
         final int videoStreamIndex = 0;
         final int ourvideoStreamId = 0;
         //1 frame per second
@@ -175,56 +168,46 @@ public class VideoFrameExtractorDelegate {
 
                         // process the video frame
 
-                        if (timespan == 0) {
-                            file = new File(output, input.getName() + "_" + counter + "_changedIMG.png");
-
-                            if (oldPic == null) {
-                                //set our oldpic for the first frame
-                                System.out.println("oldPic null");
-                                VideoFrameExtractorDelegate.processFrame(newPic, javaImage, input, output, frameFromMiddle, vidDuration, timespan);
-                                writer.encodeVideo(0, javaImage, curFrame, TimeUnit.SECONDS);
-                                System.out.println(curFrame + "curframe-firstframe");
-                                curFrame++;
-                            }
-                            else {
-                                BufferedImage oldImage = converter.toImage(oldPic);
-                                //System.out.println("newpic: width " + newPic.getWidth() + " height " + newPic.getHeight());
-                                //System.out.println("oldimage: width " + oldImage.getWidth() + " height " + oldImage.getHeight());
-                                //System.out.println("javaimage: width " + javaImage.getWidth() + " height " + javaImage.getHeight());
-                                ImageCompare imgCompare = new ImageCompare(oldImage, javaImage);
-                                imgCompare.setParameters(5,5,10,10);
-                                imgCompare.compare();
-
-                                if (!imgCompare.match()) {
-                                    //save our newPic
+                        if (frameFromMiddle) {
+                            //processFrame(newPic, javaImage, input, output, frameFromMiddle, vidDuration, timespan);
+                            if (getMiddleFrame(newPic, javaImage, input, output, vidDuration) != null)
+                                return getMiddleFrame(newPic, javaImage, input, output, vidDuration);
+                        } else {
+                            if (timespan == 0) {
+                                if (oldPic == null) {
+                                    //set our oldpic for the first frame
+                                    System.out.println("oldPic null");
                                     VideoFrameExtractorDelegate.processFrame(newPic, javaImage, input, output, frameFromMiddle, vidDuration, timespan);
                                     writer.encodeVideo(0, javaImage, curFrame, TimeUnit.SECONDS);
-                                    System.out.println(curFrame + "curframe-doesnotmatch");
+                                    System.out.println(curFrame + "curframe-firstframe");
+                                    curFrame++;
+                                } else {
+                                    BufferedImage oldImage = converter.toImage(oldPic);
+                                    ImageCompare imgCompare = new ImageCompare(oldImage, javaImage);
+                                    imgCompare.setParameters(5, 5, 10, 10);
+                                    imgCompare.compare();
+
+                                    if (!imgCompare.match()) {
+                                        //save our newPic
+                                        VideoFrameExtractorDelegate.processFrame(newPic, javaImage, input, output, frameFromMiddle, vidDuration, timespan);
+                                        writer.encodeVideo(0, javaImage, curFrame, TimeUnit.SECONDS);
+                                        System.out.println(curFrame + "curframe-doesnotmatch");
+                                        curFrame++;
+                                    }
+                                }
+                                oldPic = newPic;
+                                counter++;
+                            } else {
+                                //from http://www.xuggle.com/public/documentation/java/api/com/xuggle/mediatool/IMediaWriter.html
+                                //VideoFrameExtractorDelegate.processFrame(newPic, javaImage, input, output, frameFromMiddle, vidDuration, timespan);
+                                BufferedImage image = VideoFrameExtractorDelegate.processFrame(newPic, javaImage, input, output, frameFromMiddle, vidDuration, timespan);
+                                if (image != null) {
+                                    writer.encodeVideo(0, image, curFrame, TimeUnit.SECONDS);
+                                    System.out.println(curFrame + "curframe – interval");
                                     curFrame++;
                                 }
-                                else {
-                                    //no difference
-                                }
-
-                            }
-                            oldPic = newPic;
-                            counter++;
-                        }
-                        else {
-
-                            //generate flv
-
-                            //from http://www.xuggle.com/public/documentation/java/api/com/xuggle/mediatool/IMediaWriter.html
-
-                            //VideoFrameExtractorDelegate.processFrame(newPic, javaImage, input, output, frameFromMiddle, vidDuration, timespan);
-                            BufferedImage image = VideoFrameExtractorDelegate.processFrame(newPic, javaImage, input, output, frameFromMiddle, vidDuration, timespan);
-                            if(image != null) {
-                                writer.encodeVideo(0, image, curFrame, TimeUnit.SECONDS);
-                                System.out.println(curFrame + "curframe – interval");
-                                curFrame++;
                             }
                         }
-
                     }
                 }
             } else {
@@ -258,64 +241,17 @@ public class VideoFrameExtractorDelegate {
         writer.close();
 
         return outputFile;
-
-
     }
 
     static BufferedImage processFrame(IVideoPicture picture, BufferedImage image, File input, File output, boolean frameFromMiddle, long vidDuration, int timespan) {
         try {
             // if uninitialized, backdate mLastPtsWrite so we get the very
             // first frame
-
             if (mLastPtsWrite == Global.NO_PTS) {
                 mLastPtsWrite = picture.getPts() - NANO_SECONDS_BETWEEN_FRAMES;
             }
-            // if it's time to write the next frame
 
-            //we ONLY extract the middle frame.
-            long middleofVideo = vidDuration / 2;
-            if (frameFromMiddle && mLastPtsWrite < middleofVideo && picture.getPts() >= middleofVideo) {
-                double seconds = ((double) picture.getPts()) / Global.DEFAULT_PTS_PER_SECOND;
-                String secondsstring = Double.toString(seconds);
-                if (seconds < 10) {
-                    secondsstring = "0" + secondsstring;
-                }
-                File file = new File(output, input.getName() + ".MIDDLE." + secondsstring + "_thumb.png");
-
-                // write out PNG
-
-                ImageIO.write(image, "png", file);
-
-                // indicate file written
-
-                System.out.printf("at elapsed time of %6.3f seconds wrote: %s\n",
-                        seconds, file);
-            }
-            if (frameFromMiddle) {
-                // update last write time
-                mLastPtsWrite = picture.getPts();
-
-                return image;
-            }
-
-
-            if (!frameFromMiddle && picture.getPts() - mLastPtsWrite >= NANO_SECONDS_BETWEEN_FRAMES) {
-                // Make a temorary file name
-
-                double seconds = ((double) picture.getPts()) / Global.DEFAULT_PTS_PER_SECOND;
-                String secondsstring = Double.toString(seconds);
-                if (seconds < 10) {
-                    secondsstring = "0" + secondsstring;
-                }
-                File file = new File(output, input.getName() + secondsstring + "_thumb.png");
-
-                // write out PNG
-                ImageIO.write(image, "png", file);
-
-                // indicate file written
-                System.out.printf("at elapsed time of %6.3f seconds wrote: %s\n",
-                        seconds, file);
-
+            if (picture.getPts() - mLastPtsWrite >= NANO_SECONDS_BETWEEN_FRAMES) {
                 // update last write time
                 mLastPtsWrite += NANO_SECONDS_BETWEEN_FRAMES;
 
@@ -325,6 +261,32 @@ public class VideoFrameExtractorDelegate {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    static File getMiddleFrame(IVideoPicture picture, BufferedImage image, File input, File output, long vidDuration) {
+        // if uninitialized, backdate mLastPtsWrite so we get the very
+        // first frame
+        if (mLastPtsWrite == Global.NO_PTS) {
+            mLastPtsWrite = picture.getPts() - NANO_SECONDS_BETWEEN_FRAMES;
+        }
+        // only extract the middle frame.
+        long middleofVideo = vidDuration / 2;
+        if (mLastPtsWrite < middleofVideo && picture.getPts() >= middleofVideo) {
+            File file = new File(output, input.getName() + "middle_thumb.jpg");
+
+            // write out jpeg
+            try {
+                ImageIO.write(image, "JPEG", file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return file;
+        }
+        // update last write time
+        mLastPtsWrite = picture.getPts();
+
         return null;
     }
 
