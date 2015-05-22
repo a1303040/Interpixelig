@@ -145,8 +145,7 @@ public class VideoFramesExtractor {
                             oldPic = newPic;
                         } else {
                             //from http://www.xuggle.com/public/documentation/java/api/com/xuggle/mediatool/IMediaWriter.html
-                            BufferedImage image = VideoFramesExtractor.processFrame(newPic, javaImage);
-                            if (image != null) {
+                            if (VideoFramesExtractor.acceptFrame(newPic.getPts())) {
                                 frames.add(javaImage);
                             }
                         }
@@ -177,25 +176,24 @@ public class VideoFramesExtractor {
         return frames;
     }
 
-    static BufferedImage processFrame(IVideoPicture picture, BufferedImage image) {
+    static boolean acceptFrame(long pts) {
         try {
             // if uninitialized, backdate mLastPtsWrite so we get the very
             // first frame
             if (mLastPtsWrite == Global.NO_PTS) {
-                mLastPtsWrite = picture.getPts() - NANO_SECONDS_BETWEEN_FRAMES;
+                mLastPtsWrite = pts - NANO_SECONDS_BETWEEN_FRAMES;
             }
 
-            if (picture.getPts() - mLastPtsWrite >= NANO_SECONDS_BETWEEN_FRAMES) {
+            if (pts - mLastPtsWrite >= NANO_SECONDS_BETWEEN_FRAMES) {
                 // update last write time
                 mLastPtsWrite += NANO_SECONDS_BETWEEN_FRAMES;
 
-                //return our bufferedimage
-                return image;
+                return true;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return false;
     }
 
 }
