@@ -103,16 +103,17 @@ public class VideoFrameExtractorDelegate {
         IMediaWriter writer = null;
         File outputFile = new File(output, input.getName() + "_thumb.swf");
 
-        writer = ToolFactory.makeWriter(outputFile.getAbsolutePath());
-        final int videoStreamIndex = 0;
-        final int ourvideoStreamId = 0;
-        //1 frame per second
-        final IRational fps = IRational.make(1, 1);
-        writer.addVideoStream(videoStreamIndex, ourvideoStreamId, fps,
-                videoCoder.getWidth(), videoCoder.getHeight());
+        if(!frameFromMiddle) {
+            writer = ToolFactory.makeWriter(outputFile.getAbsolutePath());
+            final int videoStreamIndex = 0;
+            final int ourvideoStreamId = 0;
+            //1 frame per second
+            final IRational fps = IRational.make(1, 1);
+            writer.addVideoStream(videoStreamIndex, ourvideoStreamId, fps,
+                    videoCoder.getWidth(), videoCoder.getHeight());
 
-        System.out.println("input" + input + "width" + videoCoder.getWidth() + "height" + videoCoder.getHeight());
-
+            System.out.println("input" + input + "width" + videoCoder.getWidth() + "height" + videoCoder.getHeight());
+        }
         IPacket packet = IPacket.make();
         while (container.readNextPacket(packet) >= 0) {
 
@@ -237,9 +238,10 @@ public class VideoFrameExtractorDelegate {
         oldPic = null;
 
         //on complete
-        writer.flush();
-        writer.close();
-
+        if(writer != null) {
+            writer.flush();
+            writer.close();
+        }
         return outputFile;
     }
 
