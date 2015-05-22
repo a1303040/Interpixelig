@@ -25,7 +25,7 @@ public class VideoFrameExtractorDelegate {
     private static int curFrame = 0;
 
     static File processVideo(File input, File output, boolean overwrite, int timespan, boolean frameFromMiddle) {
-        NANO_SECONDS_BETWEEN_FRAMES = (long) (Global.DEFAULT_PTS_PER_SECOND * timespan);
+        NANO_SECONDS_BETWEEN_FRAMES = Global.DEFAULT_PTS_PER_SECOND * timespan;
         curFrame = 0;
 
         // source https://github.com/artclarke/xuggle-xuggler/blob/master/src/com/xuggle/xuggler/demos/DecodeAndCaptureFrames.java
@@ -162,7 +162,7 @@ public class VideoFrameExtractorDelegate {
                         } else {
                             if (timespan == 0) {
                                 if (oldPic == null) {
-                                    VideoFrameExtractorDelegate.processFrame(newPic, javaImage, input, output, frameFromMiddle, vidDuration, timespan);
+                                    VideoFrameExtractorDelegate.processFrame(newPic, javaImage);
                                     writer.encodeVideo(0, javaImage, curFrame, TimeUnit.SECONDS);
                                     curFrame++;
                                 } else {
@@ -173,7 +173,7 @@ public class VideoFrameExtractorDelegate {
 
                                     if (!imgCompare.match()) {
                                         //save our newPic
-                                        VideoFrameExtractorDelegate.processFrame(newPic, javaImage, input, output, frameFromMiddle, vidDuration, timespan);
+                                        VideoFrameExtractorDelegate.processFrame(newPic, javaImage);
                                         writer.encodeVideo(0, javaImage, curFrame, TimeUnit.SECONDS);
                                         curFrame++;
                                     }
@@ -182,7 +182,7 @@ public class VideoFrameExtractorDelegate {
                                 counter++;
                             } else {
                                 //from http://www.xuggle.com/public/documentation/java/api/com/xuggle/mediatool/IMediaWriter.html
-                                BufferedImage image = VideoFrameExtractorDelegate.processFrame(newPic, javaImage, input, output, frameFromMiddle, vidDuration, timespan);
+                                BufferedImage image = VideoFrameExtractorDelegate.processFrame(newPic, javaImage);
                                 if (image != null) {
                                     writer.encodeVideo(0, image, curFrame, TimeUnit.SECONDS);
                                     curFrame++;
@@ -225,7 +225,7 @@ public class VideoFrameExtractorDelegate {
         return outputFile;
     }
 
-    static BufferedImage processFrame(IVideoPicture picture, BufferedImage image, File input, File output, boolean frameFromMiddle, long vidDuration, int timespan) {
+    static BufferedImage processFrame(IVideoPicture picture, BufferedImage image) {
         try {
             // if uninitialized, backdate mLastPtsWrite so we get the very
             // first frame

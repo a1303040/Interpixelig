@@ -67,8 +67,8 @@ import java.awt.image.*;
 		img1 = imageToBufferedImage(GrayFilter.createDisabledImage(img1));
 		img2 = imageToBufferedImage(GrayFilter.createDisabledImage(img2));
 		// how big are each section
-		int blocksx = (int)(img1.getWidth() / comparex);
-		int blocksy = (int)(img1.getHeight() / comparey);
+		int blocksx = img1.getWidth() / comparex;
+		int blocksy = img1.getHeight() / comparey;
 		// set to a match by default, if a change is found then flag non-match
 		this.match = true;
 		// loop through whole image and compare individual blocks of images
@@ -104,7 +104,7 @@ import java.awt.image.*;
 				total += r.getSample(r.getMinX() + x, r.getMinY() + y, 0);
 			}
 		}
-		return (int)(total / ((r.getWidth()/factorD)*(r.getHeight()/factorD)));
+		return total / ((r.getWidth()/factorD)*(r.getHeight()/factorD));
 	}
 
 	// returns true if image pair is considered a match

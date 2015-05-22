@@ -32,7 +32,7 @@ public class IOUtil
 	/**
 	 	Reads a (character UTF-8) file into a string.
 	*/
-	public static String readFile(File f) throws IOException, FileNotFoundException {
+	public static String readFile(File f) throws IOException {
 		FileInputStream fis = null;
 		try {
 			fis = new FileInputStream(f);
@@ -51,8 +51,7 @@ public class IOUtil
 	/**
 		Reads (character) data from the passed file input stream into a string.
 	*/
-	public static String readFile(FileInputStream stream) throws IOException, FileNotFoundException 
-	{
+	public static String readFile(FileInputStream stream) throws IOException {
 		return readFile(stream, "UTF-8");
 	}
 
@@ -65,9 +64,7 @@ public class IOUtil
 	 		a character set identifier (see 
 	 		http://java.sun.com/javase/6/docs/api/java/nio/charset/Charset.html)
 	*/
-	public static String readFile(FileInputStream stream, String charsetString) throws IOException,
-			FileNotFoundException 
-	{
+	public static String readFile(FileInputStream stream, String charsetString) throws IOException {
 		try {
 			FileChannel fc = stream.getChannel();
 
@@ -88,7 +85,7 @@ public class IOUtil
 
 			bb.rewind();
 
-			CharBuffer cb = decoder.decode((ByteBuffer) bb);
+			CharBuffer cb = decoder.decode(bb);
 
 			fc.close();
 
