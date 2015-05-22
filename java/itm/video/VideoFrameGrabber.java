@@ -28,6 +28,25 @@ public class VideoFrameGrabber {
     }
 
     /**
+     * Main method. Parses the commandline parameters and prints usage
+     * information if required.
+     */
+    public static void main(String[] args) throws Exception {
+
+        // args = new String[] { "./media/video", "./test" };
+
+        if (args.length < 2) {
+            System.out.println("usage: java itm.video.VideoFrameGrabber <input-videoFile> <output-directory>");
+            System.out.println("usage: java itm.video.VideoFrameGrabber <input-directory> <output-directory>");
+            System.exit(1);
+        }
+        File fi = new File(args[0]);
+        File fo = new File(args[1]);
+        VideoFrameGrabber grabber = new VideoFrameGrabber();
+        grabber.batchProcessVideoFiles(fi, fo);
+    }
+
+    /**
      * Processes the passed input video file / video file directory and stores
      * the processed files in the output directory.
      *
@@ -103,28 +122,11 @@ public class VideoFrameGrabber {
         // this calls the method process video, with argument frameFromMiddle set to true
         // so we're going to extract a frame from the middle of the video...
 
+        //List<BufferedImage> frames = VideoFramesExtractor.getMiddleFrame(input);
+
         VideoFrameExtractorDelegate.processVideo(input, output, true, 1, true);
 
         return outputFile;
-    }
-
-    /**
-     * Main method. Parses the commandline parameters and prints usage
-     * information if required.
-     */
-    public static void main(String[] args) throws Exception {
-
-        // args = new String[] { "./media/video", "./test" };
-
-        if (args.length < 2) {
-            System.out.println("usage: java itm.video.VideoFrameGrabber <input-videoFile> <output-directory>");
-            System.out.println("usage: java itm.video.VideoFrameGrabber <input-directory> <output-directory>");
-            System.exit(1);
-        }
-        File fi = new File(args[0]);
-        File fo = new File(args[1]);
-        VideoFrameGrabber grabber = new VideoFrameGrabber();
-        grabber.batchProcessVideoFiles(fi, fo);
     }
 
 }
