@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * This class creates Thumbnails from video files
- *
+ * <p>
  * If the input file or the output directory do not exist, an exception is
  * thrown.
  */
@@ -56,13 +56,10 @@ public class VideoThumbnailGenerator {
     /**
      * Processes a video file directory in a batch process.
      *
-     * @param input
-     *            a reference to the video file directory
-     * @param output
-     *            a reference to the output directory
-     * @param overwrite
-     *            indicates whether existing output files should be overwritten
-     *            or not
+     * @param input     a reference to the video file directory
+     * @param output    a reference to the output directory
+     * @param overwrite indicates whether existing output files should be overwritten
+     *                  or not
      * @return a list of the created media objects (videos)
      */
     public ArrayList<File> batchProcessVideoFiles(File input, File output, boolean overwrite, int timespan) throws IOException {
@@ -136,7 +133,10 @@ public class VideoThumbnailGenerator {
         // Fill in your code here!
         // ***************************************************************
 
-        // TODO if overwrite false; if outputFile.exists do nothing
+        File outputFile = new File(output, input.getName() + "_thumb.swf");
+        if (outputFile.exists() && !overwrite) {
+            return null;
+        }
 
         // extract frames from input video
         // if timespan is set to zero, compare the frames to use and add
@@ -145,7 +145,6 @@ public class VideoThumbnailGenerator {
 
         if (!frames.isEmpty()) {
             // create a video writer
-            File outputFile = new File(output, input.getName() + "_thumb.swf");
             IMediaWriter writer = ToolFactory.makeWriter(outputFile.getAbsolutePath());
 
             // add a stream with the proper width, height and frame rate
@@ -163,7 +162,7 @@ public class VideoThumbnailGenerator {
             }
 
             // Close the writer
-            if(writer.isOpen()) {
+            if (writer.isOpen()) {
                 writer.flush();
                 writer.close();
             }

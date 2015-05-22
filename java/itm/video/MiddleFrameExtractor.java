@@ -3,25 +3,14 @@ package itm.video;
 import com.xuggle.xuggler.*;
 import com.xuggle.xuggler.video.ConverterFactory;
 import com.xuggle.xuggler.video.IConverter;
-import itm.util.ImageCompare;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 
-public class VideoFramesExtractor {
+public class MiddleFrameExtractor {
 
-    //default of 0
-    public static long NANO_SECONDS_BETWEEN_FRAMES = 0;
-    private static long mLastPtsWrite = Global.NO_PTS;
-    private static IVideoPicture oldPic = null;
-
-    static List<BufferedImage> getFrames(File input, int timespan) {
-
-        ArrayList<BufferedImage> frames = new ArrayList<>();
-        NANO_SECONDS_BETWEEN_FRAMES = Global.DEFAULT_PTS_PER_SECOND * timespan;
+    static BufferedImage getImage(File input) {
 
         // source https://github.com/artclarke/xuggle-xuggler/blob/master/src/com/xuggle/xuggler/demos/DecodeAndCaptureFrames.java
         String filename = input.getAbsolutePath();
@@ -40,6 +29,8 @@ public class VideoFramesExtractor {
 
         // query how many streams the call to open found
         int numStreams = container.getNumStreams();
+
+        long vidDuration = container.getDuration();
 
         // and iterate through the streams to find the first video stream
         int videoStreamId = -1;
@@ -107,48 +98,27 @@ public class VideoFramesExtractor {
                     // the decode.
                     if (picture.isComplete()) {
                         IVideoPicture newPic = picture;
+                        if (newPic.getPts() >= vidDuration / 2) {
 
-                        // If the resampler is not null, it means we didn't get the
-                        // video in BGR24 format and need to convert it into BGR24
-                        // format.
-                        if (resampler != null) {
-                            // we must resample
-                            newPic = IVideoPicture.make(
-                                    resampler.getOutputPixelFormat(), picture.getWidth(),
-                                    picture.getHeight());
-                            if (resampler.resample(newPic, picture) < 0)
-                                throw new RuntimeException("could not resample video from: " + filename);
-                        }
-
-                        if (newPic.getPixelType() != IPixelFormat.Type.BGR24)
-                            throw new RuntimeException("could not decode video as BGR 24 bit data in: " + filename);
-
-                        // convert the BGR24 to an Java buffered image
-                        IConverter converter = ConverterFactory.createConverter(ConverterFactory.XUGGLER_BGR_24, newPic);
-                        BufferedImage javaImage = converter.toImage(newPic);
-
-                        if (timespan == 0) {
-                            if (oldPic == null) {
-                                // add to frame
-                                frames.add(javaImage);
-                            } else {
-                                BufferedImage oldImage = converter.toImage(oldPic);
-                                ImageCompare imgCompare = new ImageCompare(oldImage, javaImage);
-                                imgCompare.setParameters(5, 5, 2, 10);
-                                imgCompare.compare();
-
-                                if (!imgCompare.match()) {
-                                    // add to frame
-                                    frames.add(javaImage);
-                                }
+                            // If the resampler is not null, it means we didn't get the
+                            // video in BGR24 format and need to convert it into BGR24
+                            // format.
+                            if (resampler != null) {
+                                // we must resample
+                                newPic = IVideoPicture.make(
+                                        resampler.getOutputPixelFormat(), picture.getWidth(),
+                                        picture.getHeight());
+                                if (resampler.resample(newPic, picture) < 0)
+                                    throw new RuntimeException(
+                                            "could not resample video from: " + filename);
                             }
-                            oldPic = newPic;
-                        } else {
-                            //from http://www.xuggle.com/public/documentation/java/api/com/xuggle/mediatool/IMediaWriter.html
-                            BufferedImage image = VideoFramesExtractor.processFrame(newPic, javaImage);
-                            if (image != null) {
-                                frames.add(javaImage);
-                            }
+
+                            if (newPic.getPixelType() != IPixelFormat.Type.BGR24)
+                                throw new RuntimeException("could not decode video as BGR 24 bit data in: " + filename);
+
+                            // convert the BGR24 to an Java buffered image
+                            IConverter converter = ConverterFactory.createConverter(ConverterFactory.XUGGLER_BGR_24, newPic);
+                            return converter.toImage(newPic);
                         }
                     }
                 }
@@ -170,31 +140,6 @@ public class VideoFramesExtractor {
             container = null;
         }
 
-        //reset our counter
-        mLastPtsWrite = Global.NO_PTS;
-        oldPic = null;
-
-        return frames;
-    }
-
-    static BufferedImage processFrame(IVideoPicture picture, BufferedImage image) {
-        try {
-            // if uninitialized, backdate mLastPtsWrite so we get the very
-            // first frame
-            if (mLastPtsWrite == Global.NO_PTS) {
-                mLastPtsWrite = picture.getPts() - NANO_SECONDS_BETWEEN_FRAMES;
-            }
-
-            if (picture.getPts() - mLastPtsWrite >= NANO_SECONDS_BETWEEN_FRAMES) {
-                // update last write time
-                mLastPtsWrite += NANO_SECONDS_BETWEEN_FRAMES;
-
-                //return our bufferedimage
-                return image;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return null;
     }
 

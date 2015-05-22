@@ -5,6 +5,8 @@ package itm.video;
  * (c) University of Vienna 2009-2015
  *******************************************************************************/
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -122,9 +124,11 @@ public class VideoFrameGrabber {
         // this calls the method process video, with argument frameFromMiddle set to true
         // so we're going to extract a frame from the middle of the video...
 
-        //List<BufferedImage> frames = VideoFramesExtractor.getMiddleFrame(input);
+        BufferedImage image = MiddleFrameExtractor.getImage(input);
 
-        VideoFrameExtractorDelegate.processVideo(input, output, true, 1, true);
+        if (image != null) {
+            ImageIO.write(image, "JPEG", outputFile);
+        }
 
         return outputFile;
     }
