@@ -1,0 +1,6 @@
+.imagethumb {
+    background-position: 1000px 1000px; /* background-image is there but not visible; not good style... */
+}
+.imagethumb:hover {
+    background-position: center center !important; /* make it visible */
+}

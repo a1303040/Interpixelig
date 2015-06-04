@@ -77,7 +77,7 @@ public class ImageHistogramGenerator {
      Processes the passed input image and stores it to the output directory.
      @param input a reference to the input image file
      @param output a reference to the output directory
-     @param bins the histogram interval
+     @param bins the number of bins
      already existing files are overwritten automatically
      */
     protected File processImage(File input, File output, int bins) throws IOException, IllegalArgumentException {
@@ -114,10 +114,10 @@ public class ImageHistogramGenerator {
         // initiate a Histogram[color components] [bins]
         if (bins < 1 || bins > 256)
             throw new IOException("Bins range " + input + " is out of bounds! (1-256)");
-        Histogram histogram = new Histogram(numColorComponent, 256 / bins);
+        Histogram histogram = new Histogram(numColorComponent, bins);
 
         // create a histogram array histArray[color components][bins/10]
-        int[][] histArray = new int[numColorComponent][256 / bins];
+        int[][] histArray = new int[numColorComponent][bins];
 
         // read the pixel values and extract the color information
         BufferedImage rgbIMG = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
@@ -128,7 +128,7 @@ public class ImageHistogramGenerator {
         for (int p = 0; p < rgbIMG.getWidth() * rgbIMG.getHeight(); p++) {
             for (int cc = 0; cc < numColorComponent; cc++) {
                 int color = (pixelValues[p] >> cc * 8) & 0xff;
-                histArray[numColorComponent - cc - 1][color / bins]++;
+                histArray[numColorComponent - cc - 1][color / (256 / bins)]++;
             }
         }
 

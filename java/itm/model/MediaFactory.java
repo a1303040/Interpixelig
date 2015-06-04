@@ -6,6 +6,7 @@ package itm.model;
 *******************************************************************************/
 
 import itm.audio.AudioMetadataGenerator;
+import itm.image.ImageHistogramGenerator;
 import itm.image.ImageMetadataGenerator;
 import itm.image.ImageThumbnailGenerator;
 import itm.video.VideoMetadataGenerator;
@@ -50,6 +51,12 @@ public class MediaFactory
 	protected static File metadataDir = null;
 
 	/**
+	 * this directory should contain all the histogram files handled by this
+	 * application.
+	 */
+	protected static File histDir = null;
+
+	/**
 	 * Indicates whether this factory was initialized or not.
 	 */
 	protected static boolean initialized = false;
@@ -58,7 +65,7 @@ public class MediaFactory
 	 * Initializes this media factory.
 	 */
 	public static void init(File imageDir, File audioDir, 
-							File videoDir, File metadataDir) 
+							File videoDir, File metadataDir)
 	{
 		MediaFactory.imageDir = imageDir;
 		MediaFactory.audioDir = audioDir;
@@ -147,6 +154,10 @@ public class MediaFactory
 		// step 3.2: create video metadata, do not overwrite if not required
 		//VideoMetadataGenerator vmg = new VideoMetadataGenerator();
 		//ret.addAll(img.batchProcessImages(videoDir, metadataDir, false));
+
+		// step 4.x
+		ImageHistogramGenerator ihg = new ImageHistogramGenerator();
+		ihg.batchProcessImages(imageDir, metadataDir, 256);
 
 		return ret;
 	}
