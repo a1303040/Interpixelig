@@ -1,0 +1,13 @@
+type: image
+file: webapps\itm\media\img\b17maartent1427.jpg
+name: b17maartent1427.jpg
+size: 580443 bytes (580kB)
+tags: image,jpg,
+width: 1280
+height: 960
+numImgComponents: 3
+numColorComponents: 3
+transparency: 1
+pixelSize: 24
+colorSpaceType: 5
+orientation: 0

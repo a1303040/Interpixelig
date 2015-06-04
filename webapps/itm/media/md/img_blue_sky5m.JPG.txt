@@ -1,0 +1,13 @@
+type: image
+file: webapps\itm\media\img\blue_sky5m.JPG
+name: blue_sky5m.JPG
+size: 43083 bytes (43kB)
+tags: image,JPG,
+width: 800
+height: 532
+numImgComponents: 3
+numColorComponents: 3
+transparency: 1
+pixelSize: 24
+colorSpaceType: 5
+orientation: 0

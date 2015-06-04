@@ -1,0 +1,13 @@
+type: image
+file: webapps\itm\media\img\zebra3m.JPG
+name: zebra3m.JPG
+size: 100585 bytes (100kB)
+tags: image,JPG,
+width: 800
+height: 532
+numImgComponents: 3
+numColorComponents: 3
+transparency: 1
+pixelSize: 24
+colorSpaceType: 5
+orientation: 0

@@ -1,0 +1,13 @@
+type: image
+file: webapps\itm\media\img\underwater_rugby.JPG
+name: underwater_rugby.JPG
+size: 114081 bytes (114kB)
+tags: image,JPG,
+width: 1024
+height: 768
+numImgComponents: 3
+numColorComponents: 3
+transparency: 1
+pixelSize: 24
+colorSpaceType: 5
+orientation: 0

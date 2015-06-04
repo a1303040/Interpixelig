@@ -1,0 +1,13 @@
+type: image
+file: webapps\itm\media\img\the_real_firefox.png
+name: the_real_firefox.png
+size: 330965 bytes (330kB)
+tags: image,png,
+width: 513
+height: 341
+numImgComponents: 3
+numColorComponents: 3
+transparency: 1
+pixelSize: 24
+colorSpaceType: 5
+orientation: 0

@@ -1,0 +1,13 @@
+type: image
+file: webapps\itm\media\img\elephant14m.png
+name: elephant14m.png
+size: 117972 bytes (117kB)
+tags: image,png,
+width: 532
+height: 800
+numImgComponents: 3
+numColorComponents: 3
+transparency: 1
+pixelSize: 4
+colorSpaceType: 5
+orientation: 1

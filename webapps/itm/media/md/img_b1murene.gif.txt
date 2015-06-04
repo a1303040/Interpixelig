@@ -1,0 +1,13 @@
+type: image
+file: webapps\itm\media\img\b1murene.gif
+name: b1murene.gif
+size: 95967 bytes (95kB)
+tags: image,gif,
+width: 500
+height: 333
+numImgComponents: 3
+numColorComponents: 3
+transparency: 1
+pixelSize: 8
+colorSpaceType: 5
+orientation: 0

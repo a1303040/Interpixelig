@@ -1,4 +1,4 @@
-<project name="2014_ITM_UE" basedir="." default="build">
+<project name="2015_ITM_UE" basedir="." default="build">
     <description>
         ITM build file
     </description>

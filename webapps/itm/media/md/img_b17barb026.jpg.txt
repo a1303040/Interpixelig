@@ -1,0 +1,13 @@
+type: image
+file: webapps\itm\media\img\b17barb026.jpg
+name: b17barb026.jpg
+size: 261328 bytes (261kB)
+tags: image,jpg,
+width: 1024
+height: 768
+numImgComponents: 3
+numColorComponents: 3
+transparency: 1
+pixelSize: 24
+colorSpaceType: 5
+orientation: 0
