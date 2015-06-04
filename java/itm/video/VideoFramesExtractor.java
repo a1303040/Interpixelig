@@ -72,7 +72,7 @@ public class VideoFramesExtractor {
 
         // Now we have found the video stream in this file.  Let's open up
         // our decoder so it can do work
-        if (videoCoder.open(null, null) < 0)
+        if (videoCoder.open() < 0)
             throw new RuntimeException(
                     "could not open video decoder for container: " + filename);
 
