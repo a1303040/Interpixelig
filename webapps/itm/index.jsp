@@ -54,9 +54,12 @@ This file is part of the WM.II.ITM course 2014
 
     <!-- get the histograms - this is NOT good style -->
     <!-- we use it here for the sake of simplicity. -->
-    <div style="width:200px;height:200px;padding:10px;background-image:url(media/md/<%= img.getInstance().getName() %>.hist.png)"; class="imagethumb">
-        <a href="media/img/<%= img.getInstance().getName()%>">
-            <img src="media/md/<%= img.getInstance().getName() %>.thumb.png" border="0"/>
+    <div style="width:200px;height:200px;padding:10px" ;>
+        <div style="background-image:url(media/md/<%= img.getInstance().getName() %>.hist.png)" ; class="imagethumb">
+            <a href="media/img/<%= img.getInstance().getName()%>">
+                <img src="media/md/<%= img.getInstance().getName() %>.thumb.png" border="0"/>
+            </a>
+        </div>
         </a>
     </div>
     <div>

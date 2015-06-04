@@ -1,6 +1,22 @@
 .imagethumb {
     background-position: 1000px 1000px; /* background-image is there but not visible; not good style... */
+    background-repeat: no-repeat;
+    height:150px;
+
 }
+
+.imagethumb img{
+    -webkit-transition: opacity 0.5s ease-in-out;
+    -moz-transition: opacity 0.5s ease-in-out;
+    -ms-transition: opacity 0.5s ease-in-out;
+    -o-transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out;
+}
+
 .imagethumb:hover {
     background-position: center center !important; /* make it visible */
+}
+
+.imagethumb:hover img{
+    opacity: 0;
 }
