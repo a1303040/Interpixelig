@@ -93,6 +93,8 @@ public class MediaFactory {
 					"error: mediafactory was not initialized yet!");
         if (media == null) // load media for the first time only
             media = loadMedia();
+        if (tag == null)
+            return getMedia();
 		ArrayList<AbstractMedia> ret = new ArrayList<AbstractMedia>();
 		for (AbstractMedia am : media) {
             if (am.getTags().contains(tag))

@@ -15,6 +15,7 @@ This file is part of the WM.II.ITM course 2014
 <h1>Welcome to the ITM media library</h1>
 <a href="infovis.jsp">infovis</a>
 
+<%= request.getParameter("tagname") %>
 
 <%
     // get the file paths - this is NOT good style (resources should be loaded via inputstreams...)
@@ -29,8 +30,9 @@ This file is part of the WM.II.ITM course 2014
     File metadataDir = new File(basePath, "md");
     MediaFactory.init(imageDir, audioDir, videoDir, metadataDir);
 
+    String tag = request.getParameter("tagname");
     // get all media objects
-    ArrayList<AbstractMedia> media = MediaFactory.getMedia();
+    ArrayList<AbstractMedia> media = MediaFactory.getMedia(tag);
 
     int c = 0; // counter for rowbreak after 3 thumbnails.
     // iterate over all available media objects
