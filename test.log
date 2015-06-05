@@ -1,0 +1,88 @@
+2015-06-05 00:17:55,837 [http-nio-8080-exec-1] ERROR org.ffmpeg - [mp3 @ 0x7fc2d2c1fa00] Header missing
+2015-06-05 00:17:57,178 [http-nio-8080-exec-1] ERROR org.ffmpeg - [mp3 @ 0x7fc2cac7b800] Header missing
+2015-06-05 00:18:47,249 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 00:18:47,252 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 00:18:47,252 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 00:18:47,252 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:25:17,398 [http-nio-8080-exec-2] ERROR org.ffmpeg - [mp3 @ 0x7fc2d0258a00] Header missing
+2015-06-05 22:25:17,967 [http-nio-8080-exec-2] ERROR org.ffmpeg - [mp3 @ 0x7fc2d2f18a00] Header missing
+2015-06-05 22:31:55,925 [http-nio-8080-exec-17] ERROR org.ffmpeg - [mp3 @ 0x7fc2d5448e00] Header missing
+2015-06-05 22:31:56,644 [http-nio-8080-exec-17] ERROR org.ffmpeg - [mp3 @ 0x7fc2cbc1fc00] Header missing
+2015-06-05 22:34:13,086 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:34:13,087 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:34:13,087 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:34:13,088 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:34:13,103 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:34:13,104 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:34:13,104 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:34:13,104 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:34:28,442 [http-nio-8080-exec-19] ERROR org.ffmpeg - [mp3 @ 0x7fc2cfd41400] Header missing
+2015-06-05 22:34:29,299 [http-nio-8080-exec-19] ERROR org.ffmpeg - [mp3 @ 0x7fc2d524b800] Header missing
+2015-06-05 22:35:22,495 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:35:22,496 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:35:22,496 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:35:22,496 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:37:10,491 [http-nio-8080-exec-26] ERROR org.ffmpeg - [mp3 @ 0x7fc2d42b5000] Header missing
+2015-06-05 22:37:11,374 [http-nio-8080-exec-26] ERROR org.ffmpeg - [mp3 @ 0x7fc2d4812a00] Header missing
+2015-06-05 22:38:58,479 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:38:58,480 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:38:58,480 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:38:58,480 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:40:06,211 [http-nio-8080-exec-23] ERROR org.ffmpeg - [mp3 @ 0x7fc2d67c4000] Header missing
+2015-06-05 22:40:07,032 [http-nio-8080-exec-23] ERROR org.ffmpeg - [mp3 @ 0x7fc2ca90ce00] Header missing
+2015-06-05 22:40:30,940 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:40:30,940 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:40:30,941 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:40:30,941 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:41:03,549 [http-nio-8080-exec-31] ERROR org.ffmpeg - [mp3 @ 0x7fc2d3b9d000] Header missing
+2015-06-05 22:41:04,225 [http-nio-8080-exec-31] ERROR org.ffmpeg - [mp3 @ 0x7fc2d60f5e00] Header missing
+2015-06-05 22:41:11,963 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:41:11,963 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:41:11,963 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:41:11,963 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:49:52,775 [http-nio-8080-exec-34] ERROR org.ffmpeg - [mp3 @ 0x7fc2d5c23c00] Header missing
+2015-06-05 22:49:53,646 [http-nio-8080-exec-34] ERROR org.ffmpeg - [mp3 @ 0x7fc2d78d0a00] Header missing
+2015-06-05 22:51:11,613 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:51:11,614 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:51:11,615 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 22:51:11,615 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 23:02:46,770 [http-nio-8080-exec-44] ERROR org.ffmpeg - [mp3 @ 0x7fc2d58a9600] Header missing
+2015-06-05 23:02:47,590 [http-nio-8080-exec-44] ERROR org.ffmpeg - [mp3 @ 0x7fc2d406b400] Header missing
+2015-06-05 23:04:24,493 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 23:04:24,493 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 23:04:24,493 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 23:04:24,493 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 23:21:50,171 [http-nio-8080-exec-63] ERROR org.ffmpeg - [mp3 @ 0x7fc2d7c0c800] Header missing
+2015-06-05 23:21:50,933 [http-nio-8080-exec-63] ERROR org.ffmpeg - [mp3 @ 0x7fc2d280fe00] Header missing
+2015-06-05 23:21:51,474 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 23:21:51,475 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 23:21:51,475 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 23:21:51,475 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 23:28:58,018 [http-nio-8080-exec-65] ERROR org.ffmpeg - [mp3 @ 0x7fc2d6691400] Header missing
+2015-06-05 23:28:58,836 [http-nio-8080-exec-65] ERROR org.ffmpeg - [mp3 @ 0x7fc2d8be4e00] Header missing
+2015-06-05 23:29:57,302 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 23:29:57,303 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 23:29:57,303 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 23:29:57,303 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 23:35:26,933 [http-nio-8080-exec-81] ERROR org.ffmpeg - [mp3 @ 0x7fc2c98f7a00] Header missing
+2015-06-05 23:35:27,502 [http-nio-8080-exec-81] ERROR org.ffmpeg - [mp3 @ 0x7fc2d659ea00] Header missing
+2015-06-05 23:37:14,850 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 23:37:14,852 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 23:37:14,852 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 23:37:14,852 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 23:39:11,944 [http-nio-8080-exec-1] ERROR org.ffmpeg - [mp3 @ 0x7fa184378a00] Header missing
+2015-06-05 23:39:12,499 [http-nio-8080-exec-1] ERROR org.ffmpeg - [mp3 @ 0x7fa18e825600] Header missing
+2015-06-05 23:43:34,606 [http-nio-8080-exec-4] ERROR org.ffmpeg - [mp3 @ 0x7fe1e9f83200] Header missing
+2015-06-05 23:43:35,164 [http-nio-8080-exec-4] ERROR org.ffmpeg - [mp3 @ 0x7fe1ea1b9600] Header missing
+2015-06-05 23:54:51,238 [http-nio-8080-exec-2] ERROR org.ffmpeg - [mp3 @ 0x7feb3312d000] Header missing
+2015-06-05 23:54:51,803 [http-nio-8080-exec-2] ERROR org.ffmpeg - [mp3 @ 0x7feb3ba51200] Header missing
+2015-06-05 23:54:56,660 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 23:54:56,669 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 23:54:56,669 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-05 23:54:56,670 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-06 00:01:47,593 [http-nio-8080-exec-13] ERROR org.ffmpeg - [mp3 @ 0x7feb34773800] Header missing
+2015-06-06 00:01:48,162 [http-nio-8080-exec-13] ERROR org.ffmpeg - [mp3 @ 0x7feb3a68ca00] Header missing
+2015-06-06 00:02:10,238 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-06 00:02:10,239 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-06 00:02:10,239 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
+2015-06-06 00:02:10,239 [Finalizer] DEBUG com.xuggle.xuggler - Closing dangling Container (../../../../../../../csrc/com/xuggle/xuggler/Container.cpp:146)
