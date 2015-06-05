@@ -9,13 +9,13 @@ package itm.audio;
 
 
 import com.sun.media.sound.WaveFileWriter;
-import javazoom.jl.converter.WaveFile;
-import org.tritonus.share.sampled.file.TAudioFileFormat;
 
 import javax.sound.sampled.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * This class creates acoustic thumbnails from various types of audio files. It

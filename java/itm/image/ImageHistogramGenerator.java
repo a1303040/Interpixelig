@@ -19,26 +19,27 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- This class creates color and grayscale histograms for various images.
- It can be called with 3 parameters, an input filename/directory, an output directory and a various bin/interval size.
- It will read the input image(s), count distinct pixel values and then plot the histogram.
-
- If the input file or the output directory do not exist, an exception is thrown.
+ * This class creates color and grayscale histograms for various images.
+ * It can be called with 3 parameters, an input filename/directory, an output directory and a various bin/interval size.
+ * It will read the input image(s), count distinct pixel values and then plot the histogram.
+ * <p>
+ * If the input file or the output directory do not exist, an exception is thrown.
  */
 public class ImageHistogramGenerator {
 
     /**
-     Constructor.
+     * Constructor.
      */
     public ImageHistogramGenerator() {
     }
 
     /**
-     Processes an image directory in a batch process.
-     @param input a reference to the input image file
-     @param output a reference to the output directory
-     @param bins the histogram interval
-     @return a list of the created files
+     * Processes an image directory in a batch process.
+     *
+     * @param input  a reference to the input image file
+     * @param output a reference to the output directory
+     * @param bins   the histogram interval
+     * @return a list of the created files
      */
     public ArrayList<File> batchProcessImages(File input, File output, int bins) throws IOException {
         if (!input.exists())
@@ -74,11 +75,12 @@ public class ImageHistogramGenerator {
     }
 
     /**
-     Processes the passed input image and stores it to the output directory.
-     @param input a reference to the input image file
-     @param output a reference to the output directory
-     @param bins the number of bins
-     already existing files are overwritten automatically
+     * Processes the passed input image and stores it to the output directory.
+     *
+     * @param input  a reference to the input image file
+     * @param output a reference to the output directory
+     * @param bins   the number of bins
+     *               already existing files are overwritten automatically
      */
     protected File processImage(File input, File output, int bins) throws IOException, IllegalArgumentException {
         if (!input.exists())
@@ -145,7 +147,7 @@ public class ImageHistogramGenerator {
 
 
     /**
-     Main method. Parses the commandline parameters and prints usage information if required.
+     * Main method. Parses the commandline parameters and prints usage information if required.
      */
     public static void main(String[] args) throws Exception {
         if (args.length < 3) {

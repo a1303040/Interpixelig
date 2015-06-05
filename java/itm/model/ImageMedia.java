@@ -257,7 +257,7 @@ public class ImageMedia extends AbstractMedia {
     }
 
     @Override
-    public String formatTags(StringBuffer buf){
+    public String formatTags(StringBuffer buf) {
         return super.formatTags(buf);
     }
 }

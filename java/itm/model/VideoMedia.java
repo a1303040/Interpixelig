@@ -13,7 +13,7 @@ public class VideoMedia extends AbstractMedia {
     // Fill in your code here!
     // ***************************************************************
 
-	/* video format metadata */
+    /* video format metadata */
     protected String videoCodec;
     protected String videoCodecID;
     protected String videoFrameRate;
@@ -21,7 +21,7 @@ public class VideoMedia extends AbstractMedia {
     protected String videoHeight;
     protected String videoWidth;
 
-	/* audio format metadata */
+    /* audio format metadata */
     protected String audioCodec;
     protected String audioCodecID;
     protected String audioChannels;
@@ -42,7 +42,7 @@ public class VideoMedia extends AbstractMedia {
         super(instance);
     }
 
-	/* GET / SET methods */
+    /* GET / SET methods */
     public String getVideoCodec() {
         return videoCodec;
     }
@@ -139,7 +139,6 @@ public class VideoMedia extends AbstractMedia {
 
     /**
      * Serializes this object to the passed file.
-     *
      */
     @Override
     public StringBuffer serializeObject() throws IOException {
@@ -155,37 +154,37 @@ public class VideoMedia extends AbstractMedia {
         // Fill in your code here!
         // ***************************************************************
 
-        if(videoCodec != null) {
+        if (videoCodec != null) {
             out.println("videoCodec: " + getVideoCodec());
         }
-        if(videoCodecID != null) {
+        if (videoCodecID != null) {
             out.println("videoCodecID: " + getVideoCodecID());
         }
-        if(videoFrameRate != null) {
+        if (videoFrameRate != null) {
             out.println("videoFrameRate: " + getVideoFrameRate());
         }
-        if(videoLength != null) {
+        if (videoLength != null) {
             out.println("videoLength in seconds: " + getVideoLength());
         }
-        if(videoHeight != null) {
+        if (videoHeight != null) {
             out.println("videoHeight: " + getVideoHeight());
         }
-        if(videoWidth != null) {
+        if (videoWidth != null) {
             out.println("videoWidth: " + getVideoWidth());
         }
-        if(audioCodec != null) {
+        if (audioCodec != null) {
             out.println("audioCodec: " + getAudioCodec());
         }
-        if(audioCodecID != null) {
+        if (audioCodecID != null) {
             out.println("audioCodecID: " + getAudioCodecID());
         }
-        if(audioChannels != null) {
+        if (audioChannels != null) {
             out.println("audioChannels: " + getAudioChannels());
         }
-        if(audioSampleRate != null) {
+        if (audioSampleRate != null) {
             out.println("audioSampleRate: " + getAudioSampleRate());
         }
-        if(audioBitRate != null) {
+        if (audioBitRate != null) {
             out.println("audioBitRate: " + getAudioBitRate());
         }
 
@@ -236,7 +235,7 @@ public class VideoMedia extends AbstractMedia {
     }
 
     @Override
-    public String formatTags(StringBuffer buf){
+    public String formatTags(StringBuffer buf) {
         return super.formatTags(buf);
     }
 }

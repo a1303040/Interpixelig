@@ -18,13 +18,13 @@ import java.util.ArrayList;
 /**
  * This class reads video files, extracts metadata for both the audio and the
  * video track, and writes these metadata to a file.
- *
+ * <p>
  * It can be called with 3 parameters, an input filename/directory, an output
  * directory and an "overwrite" flag. It will read the input video file(s),
  * retrieve the metadata and write it to a text file in the output directory.
  * The overwrite flag indicates whether the resulting output file should be
  * overwritten or not.
- *
+ * <p>
  * If the input file or the output directory do not exist, an exception is
  * thrown.
  */
@@ -39,13 +39,10 @@ public class VideoMetadataGenerator {
     /**
      * Processes a video file directory in a batch process.
      *
-     * @param input
-     *            a reference to the video file directory
-     * @param output
-     *            a reference to the output directory
-     * @param overwrite
-     *            indicates whether existing metadata files should be
-     *            overwritten or not
+     * @param input     a reference to the video file directory
+     * @param output    a reference to the output directory
+     * @param overwrite indicates whether existing metadata files should be
+     *                  overwritten or not
      * @return a list of the created media objects (videos)
      */
     public ArrayList<VideoMedia> batchProcessVideoFiles(File input, File output, boolean overwrite) throws IOException {
@@ -94,13 +91,10 @@ public class VideoMetadataGenerator {
      * Processes the passed input video file and stores the extracted metadata
      * to a textfile in the output directory.
      *
-     * @param input
-     *            a reference to the input video file
-     * @param output
-     *            a reference to the output directory
-     * @param overwrite
-     *            indicates whether existing metadata files should be
-     *            overwritten or not
+     * @param input     a reference to the input video file
+     * @param output    a reference to the output directory
+     * @param overwrite indicates whether existing metadata files should be
+     *                  overwritten or not
      * @return the created video media object
      */
     protected VideoMedia processVideo(File input, File output, boolean overwrite) throws Exception {

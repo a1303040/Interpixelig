@@ -54,7 +54,7 @@ public class AudioPlayer {
 
     /**
      * Decodes an encoded audio file and returns a PCM input stream
-     * <p/>
+     * <p>
      * Supported encodings: MP3, OGG (requires SPIs to be in the classpath)
      *
      * @param input a reference to the input audio file

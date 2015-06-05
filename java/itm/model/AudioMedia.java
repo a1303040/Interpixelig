@@ -155,7 +155,6 @@ public class AudioMedia extends AbstractMedia {
 
     /**
      * Serializes this object to the passed file.
-     *
      */
     @Override
     public StringBuffer serializeObject() throws IOException {
@@ -169,46 +168,46 @@ public class AudioMedia extends AbstractMedia {
         // Fill in your code here!
         // ***************************************************************
 
-        if(encoding != null) {
+        if (encoding != null) {
             out.println("encoding: " + getEncoding());
         }
-        if(duration != null) {
+        if (duration != null) {
             out.println("duration in seconds: " + getDuration());
         }
-        if(author != null) {
+        if (author != null) {
             out.println("author: " + getAuthor());
         }
-        if(title != null) {
+        if (title != null) {
             out.println("title: " + getTitle());
         }
-        if(date != null) {
+        if (date != null) {
             out.println("date: " + getDate());
         }
-        if(comment != null) {
+        if (comment != null) {
             out.println("comment: " + getComment());
         }
-        if(album != null) {
+        if (album != null) {
             out.println("album: " + getAlbum());
         }
-        if(track != null) {
+        if (track != null) {
             out.println("track: " + getTrack());
         }
-        if(composer != null) {
+        if (composer != null) {
             out.println("composer: " + getComposer());
         }
-        if(genre != null) {
+        if (genre != null) {
             out.println("genre: " + getGenre());
         }
-        if(frequency != null) {
+        if (frequency != null) {
             out.println("frequency: " + getFrequency());
         }
-        if(bitrate != null) {
+        if (bitrate != null) {
             out.println("bitrate: " + getBitrate());
         }
-        if(channels != null) {
+        if (channels != null) {
             out.println("channels: " + getChannels());
         }
-        
+
         return data.getBuffer();
     }
 
@@ -260,7 +259,7 @@ public class AudioMedia extends AbstractMedia {
     }
 
     @Override
-    public String formatTags(StringBuffer buf){
+    public String formatTags(StringBuffer buf) {
         return super.formatTags(buf);
     }
 }
