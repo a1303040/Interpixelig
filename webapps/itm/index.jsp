@@ -37,7 +37,7 @@ This file is part of the WM.II.ITM course 2014
     for (AbstractMedia medium : media) {
         c++;
 %>
-<div style="width:300px;height:300px;padding:10px;float:left;">
+<div style="width:300px;padding:10px;float:left;">
     <%
 
         // handle images
@@ -55,9 +55,10 @@ This file is part of the WM.II.ITM course 2014
     <!-- get the histograms - this is NOT good style -->
     <!-- we use it here for the sake of simplicity. -->
     <div style="width:200px;height:200px;padding:10px" ;>
-        <div style="background-image:url(media/md/<%= img.getInstance().getName() %>.hist.png)" ; class="imagethumb">
+        <div class="imagethumb">
             <a href="media/img/<%= img.getInstance().getName()%>">
                 <img src="media/md/<%= img.getInstance().getName() %>.thumb.png" border="0"/>
+                <img src="media/md/<%= img.getInstance().getName() %>.hist.png" border="0"/>
             </a>
         </div>
         </a>
@@ -66,7 +67,10 @@ This file is part of the WM.II.ITM course 2014
         Name: <%= img.getName() %><br/>
         Dimensions: <%= img.getWidth() %>x<%= img.getHeight() %>px<br/>
         Tags: <% for (String t : img.getTags()) { %><a href="tags.jsp?tag=<%= t %>"><%= t %>
+
     </a> <% } %><br/>
+        Meta Data:
+        <span class="metadata" ><%= img.formatTags(img.serializeObject()) %></span>
     </div>
     <%
     } else if (medium instanceof AudioMedia) {
@@ -86,6 +90,8 @@ This file is part of the WM.II.ITM course 2014
         Duration: <%= audio.getDuration() %><br/>
         Tags: <% for (String t : audio.getTags()) { %><a href="tags.jsp?tag=<%= t %>"><%= t %>
     </a> <% } %><br/>
+        Meta Data:
+        <span class="metadata" ><%= audio.formatTags(audio.serializeObject()) %></span>
     </div>
     <%
     } else if (medium instanceof VideoMedia) {
@@ -108,6 +114,8 @@ This file is part of the WM.II.ITM course 2014
     </a><br/>
         Tags: <% for (String t : video.getTags()) { %><a href="tags.jsp?tag=<%= t %>"><%= t %>
     </a> <% } %><br/>
+        Meta Data:
+        <span class="metadata" ><%= video.formatTags(video.serializeObject()) %></span>
     </div>
     <%
         } else {

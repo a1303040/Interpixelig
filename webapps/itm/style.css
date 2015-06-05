@@ -1,22 +1,42 @@
 .imagethumb {
-    background-position: 1000px 1000px; /* background-image is there but not visible; not good style... */
-    background-repeat: no-repeat;
-    height:150px;
-
+    position: relative;
+    width: 200px;
+    height: 200px;
 }
-
-.imagethumb img{
+.imagethumb > a > img{
+    display: block;
+    max-width: 200px;
+    max-height: 200px;
+    position: absolute;
+    /* transitions */
     -webkit-transition: opacity 0.5s ease-in-out;
     -moz-transition: opacity 0.5s ease-in-out;
     -ms-transition: opacity 0.5s ease-in-out;
     -o-transition: opacity 0.5s ease-in-out;
     transition: opacity 0.5s ease-in-out;
 }
+/* from http://stackoverflow.com/a/13034571/841052 */
+/* solution 1: css3 solution, it depends on <img>'s order */
 
-.imagethumb:hover {
-    background-position: center center !important; /* make it visible */
+.imagethumb > a > img:nth-child(1){ /* first <img> child of <div> */
+    filter: alpha(opacity=100); /* IE stuff */
+    opacity: 1;
+}
+.imagethumb > a > img:nth-child(2){ /* second <img> child of <div> */
+    filter: alpha(opacity=0); /* IE stuff */
+    opacity: 0;
+}
+/* hover */
+.imagethumb:hover > a > img:nth-child(1){
+    filter: alpha(opacity=0);
+    opacity: 0;
+}
+.imagethumb:hover > a > img:nth-child(2){
+    filter: alpha(opacity=100);
+    opacity: 1;
 }
 
-.imagethumb:hover img{
-    opacity: 0;
+.metadata {
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
