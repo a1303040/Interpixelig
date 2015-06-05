@@ -49,9 +49,8 @@ fill in your code here :)
     // iterate over all available media objects and display them
 
 %>
-
+<% // TODO this is not good practice, we should NOT be using scriptlets, but expression language, JSTL, etc... %>
 <jsp:include page="index.jsp">
-    <% // TODO this is not good practice, we should NOT be using scriptlets, but expression language, JSTL, etc... %>
     <jsp:param name="tagname" value="<%= tag %>"/>
 </jsp:include>
 

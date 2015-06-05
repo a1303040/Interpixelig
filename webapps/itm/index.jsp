@@ -15,7 +15,10 @@ This file is part of the WM.II.ITM course 2014
 <h1>Welcome to the ITM media library</h1>
 <a href="infovis.jsp">infovis</a>
 
-<%= request.getParameter("tagname") %>
+<%=
+// TODO for debugging only…
+request.getParameter("tagname")
+%>
 
 <%
     // get the file paths - this is NOT good style (resources should be loaded via inputstreams...)
