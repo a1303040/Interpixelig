@@ -255,6 +255,9 @@ public class ImageMedia extends AbstractMedia {
                 setOrientation(Integer.parseInt(line.substring("orientation: ".length())));
         }
     }
+
+    @Override
+    public String formatTags(StringBuffer buf){
+        return super.formatTags(buf);
+    }
 }
-
-

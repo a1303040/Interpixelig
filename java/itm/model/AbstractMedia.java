@@ -7,6 +7,7 @@ package itm.model;
 
 import java.io.*;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import itm.util.*;
 
@@ -200,6 +201,12 @@ public abstract class AbstractMedia
         String data = IOUtil.readFile( inputFile );
         deserializeObject( data );
     }
+
+    public String formatTags(StringBuffer buf){
+        Pattern delLine = Pattern.compile("(?m)^tags:.*(\r\n?|\n)");
+        return delLine.matcher(buf).replaceAll("");
+    }
+
 
     /**
         For debugging purposes only

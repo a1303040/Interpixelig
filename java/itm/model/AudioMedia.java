@@ -259,4 +259,8 @@ public class AudioMedia extends AbstractMedia {
         }
     }
 
+    @Override
+    public String formatTags(StringBuffer buf){
+        return super.formatTags(buf);
+    }
 }
