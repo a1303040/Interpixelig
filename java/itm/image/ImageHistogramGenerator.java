@@ -138,7 +138,7 @@ public class ImageHistogramGenerator {
         histogram.setHistogram(histArray);
 
         // plot the histogram, try different dimensions for better visualization
-        BufferedImage plottedHistogram = histogram.plotHistogram(200, 150);
+        BufferedImage plottedHistogram = histogram.plotHistogram(200, 200);
 
         // encode and save the image as png
         ImageIO.write(plottedHistogram, "png", outputFile);
