@@ -1,6 +1,7 @@
 <%@ page import="itm.model.*" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="itm.image.ImageDominantColor" %>
 <!--
 /*******************************************************************************
 This file is part of the WM.II.ITM course 2014
@@ -69,6 +70,8 @@ request.getParameter("tagname")
         </a>
     </div>
     <div>
+        <% ImageDominantColor idc = new ImageDominantColor(); %>
+        Dominant Color: <%= idc.getDominantColor(img.getInstance()) %><br />
         Name: <%= img.getName() %><br/>
         Dimensions: <%= img.getWidth() %>x<%= img.getHeight() %>px<br/>
         Tags: <% for (String t : img.getTags()) { %><a href="tags.jsp?tag=<%= t %>"><%= t %>
