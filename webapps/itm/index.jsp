@@ -70,8 +70,6 @@ request.getParameter("tagname")
         </a>
     </div>
     <div>
-        <% ImageDominantColor idc = new ImageDominantColor(); %>
-        Dominant Color: <%= idc.getDominantColor(img.getInstance()) %><br />
         Name: <%= img.getName() %><br/>
         Dimensions: <%= img.getWidth() %>x<%= img.getHeight() %>px<br/>
         Tags: <% for (String t : img.getTags()) { %><a href="tags.jsp?tag=<%= t %>"><%= t %>

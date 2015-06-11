@@ -129,11 +129,18 @@ public class ImageMetadataGenerator {
         // add a tag "image" to the media
         media.addTag("image");
 
+        // add dominant color tag
+        ImageDominantColor idc = new ImageDominantColor();
+        for(String tag : idc.getDominantColors(media.getInstance())){
+            System.out.println(tag);
+            media.addTag(tag);
+        }
+
         // add a tag corresponding to the filename extension of the file to the media
         String extension = "";
         int i = input.getName().lastIndexOf('.');
         if (i > 0) {
-            extension = input.getName().substring(i + 1);
+            extension = input.getName().substring(i + 1).toLowerCase();
         }
         media.addTag(extension);
 

@@ -253,6 +253,15 @@ public class AudioMetadataGenerator {
         // add a "audio" tag
         media.addTag("audio");
 
+        // add a tag corresponding to the filename extension of the file to the media
+        String extension = "";
+        int i = input.getName().lastIndexOf('.');
+        if (i > 0) {
+            extension = input.getName().substring(i + 1).toLowerCase();
+        }
+        media.addTag(extension);
+
+
         // close the audio and write the md file.
         din.close();
         media.writeToFile(outputFile);

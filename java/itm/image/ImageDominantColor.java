@@ -9,6 +9,7 @@ import java.awt.image.ColorModel;
 import java.awt.image.DataBufferInt;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by emanuelstadler on 6/6/15.
@@ -21,7 +22,7 @@ import java.io.IOException;
 public class ImageDominantColor {
 
     // TODO this is really similar to our histogram generator
-    public String getDominantColor(File input) throws IOException, IllegalArgumentException {
+    public ArrayList<String> getDominantColors(File input) throws IOException, IllegalArgumentException {
         // load the input image
         BufferedImage img = null;
         img = ImageIO.read(input);
@@ -54,6 +55,11 @@ public class ImageDominantColor {
                 int green = c.getGreen();
                 int blue = c.getBlue();
 
+                // white black or gray
+                if(red == green && red == blue){
+                    //jump to the next iteration
+                    continue;
+                }
                 // if getRed biggest value
                 if(red >= green && red >= blue ){
                     redcount++;
@@ -72,21 +78,24 @@ public class ImageDominantColor {
 
         // now we look at our counts
         // TODO multiple assignments
-        // TODO ignore black / white pixels ?
+
+        ArrayList<String> colors = new ArrayList<>();
 
         // if getRed biggest value
-        if(redcount >= greencount && redcount >= bluecount ){
-            return "red";
+        // ignore grayscale
+        if(redcount != 0 && greencount != 0 && bluecount != 0) {
+            if (redcount >= greencount && redcount >= bluecount) {
+                colors.add("red");
+            }
+            // if getGreen biggest value,
+            if (greencount >= redcount && greencount >= bluecount) {
+                colors.add("green");
+            }
+            // if getBlue biggest value,
+            if (bluecount >= redcount && bluecount >= greencount) {
+                colors.add("blue");
+            }
         }
-        // if getGreen biggest value,
-        if(greencount >= redcount && greencount >= bluecount ) {
-            return "green";
-        }
-        // if getBlue biggest value,
-        if(bluecount >= redcount && bluecount >= greencount) {
-            return "blue";
-        }
-
-    return "err";
+        return colors;
     }
 }

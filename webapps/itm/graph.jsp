@@ -1,6 +1,7 @@
 <%@ page import="itm.model.*" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Hashtable" %>
+<%@ page import="java.util.Enumeration" %>
 
 <!--
 /*******************************************************************************
@@ -46,9 +47,41 @@ This file is part of the WM.II.ITM course 2014
                 }
 
                 // create tag nodes (and respective edges) if not existing
+                for(String tag : medium.getTags()){
+                    tagNodes.putIfAbsent(tag, medium.getName());
+                }
             }
         %>
 
+        <%
+        Enumeration<String> tags = tagNodes.keys();
+        while(tags.hasMoreElements()){
+            String tag = tags.nextElement();
+        %>
+        <node id="<%=tag%>">
+            <data key="type">concept</data>
+            <data key="name"><%=tag%></data>
+            <data key="url">http://localhost:8080/itm/tags.jsp?tag=<%=tag%></data>
+        </node>
+        <edge id="edge_n0_<%=tag%>" directed="false" source="n0" target="<%=tag%>"/>
+        <%}%>
+
+        <%
+            for (AbstractMedia medium : media) {
+
+        %>
+        <node id="<%=medium.getName()%>">
+            <data key="type">node</data>
+            <data key="name"><%=medium.getName()%></data>
+            <data key="url">http://localhost:8080/<%= medium.getInstance() %></data>
+        </node>
+        <%
+            ArrayList<String> mediumtags = medium.getTags();
+            for(String mediumtag : mediumtags){
+        %>
+        <edge id="edge_<%=medium.getName()%>_<%=mediumtag%>" directed="false" source="<%=medium.getName()%>" target="<%=mediumtag%>"/>
+        <%}%>
+        <%}%>
 
     </graph>
 </graphml>

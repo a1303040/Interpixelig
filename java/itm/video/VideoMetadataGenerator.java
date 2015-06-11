@@ -161,6 +161,14 @@ public class VideoMetadataGenerator {
         // add video tag
         media.addTag("video");
 
+        // add a tag corresponding to the filename extension of the file to the media
+        String extension = "";
+        int i = input.getName().lastIndexOf('.');
+        if (i > 0) {
+            extension = input.getName().substring(i + 1).toLowerCase();
+        }
+        media.addTag(extension);
+
         // write metadata
         media.writeToFile(outputFile);
 
