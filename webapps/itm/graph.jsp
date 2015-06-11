@@ -77,9 +77,12 @@ This file is part of the WM.II.ITM course 2014
         </node>
         <%
             ArrayList<String> mediumtags = medium.getTags();
+            if(mediumtags.size()==0) { %>
+            <edge id="edge_<%=medium.getName()%>_n0" directed="false" source="<%=medium.getName()%>" target="n0"/>
+        <% }
             for(String mediumtag : mediumtags){
         %>
-        <edge id="edge_<%=medium.getName()%>_<%=mediumtag%>" directed="false" source="<%=medium.getName()%>" target="<%=mediumtag%>"/>
+            <edge id="edge_<%=medium.getName()%>_<%=mediumtag%>" directed="false" source="<%=medium.getName()%>" target="<%=mediumtag%>"/>
         <%}%>
         <%}%>
 
