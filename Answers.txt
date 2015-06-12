@@ -1,83 +1,53 @@
 -------------------------------------------------
-Assignment 2 - Digital Audio and Video Processing
+Assignment 3 - Multimedia Information System
 -------------------------------------------------
 
 Please answer the following questions in written form (1-2 A4 pages max.)
 
 -----------------------------------------------------------------
-Task 2.1: play (encoded) audio files
+Task 3.2: Add a tag-based search page
 -----------------------------------------------------------------
 
-* Describe the physical appearance of sound and how is it converted to digital sampled audio. Explain how sampling works and the meaning of the terms amplitude, sampling frequency, and quantization.
+* What are the shortcomings of our very simple tagging approach?
 
-Sound is a wave of pressure in the transporting medium (most commonly air). A higher amplitude is perceived louder. An analogue sound signal can be digitalized by sampling. With specific frequency the amplitude is measured and transformed into a digital value via quantization. A specific set of digital values available on which the amplitudes get mapped (rounded up or down). The sampling frequency should be at least double the max sound frequency (pitch) to be restorable. Thus audio files are most commonly sampled at 44.1 kHz.
-
-
------------------------------------------------------------------
-Task 2.2: generate "thumbnails" from audio files
------------------------------------------------------------------
-
-* Why do WAV files require more storage space than MP3 files?
-
-Because they are uncompressed as opposed to MP3 files.
+lipsum
 
 ---
 
-* In the Java Sound API: what is a sample, what is a frame?
+* What can be said about relationships between tags?
 
-A frame consists of several samples. Either a set of samples of every channel at a given point in time (PCM encoding) or even a whole series of samples and additional non-sample data.
-
-----------------------------------------------------------
-Task 2.3: extract/get audio metadata
-----------------------------------------------------------
-
-* How is volume (i.e., how loud a sound is) reflected in analog and digital audio signals? Why does it make sense to perform non-uniform quantization?
-
-Volume is reflected in the amplitude of the audio signals. The higher the amplitude, the louder the sound is perceived.
-If a signal tends to stay in an amplitude range most of the time and only rarely gets higher than that it doesn’t make sense to use a lot of bytes on the rarely used amplitude values. Thus the number of bytes used for the common range can be increased while the rarely used amplitudes can be sampled with a lower resolution.
+lipsum
 
 ---
 
-* What is Pulse Code Modulation (PCM)?
+* We used tags for simple "content typing". How can content typing in the sense we did it improve navigation and search in an information system?
 
-Sampling an audio signal in uniform intervals and quantizing the samples to the nearest value of a specific digital raster.
+lipsum
 
 ----------------------------------------------------------
-Task 2.5: extract frames from video files
+Task 3.3: Metadata extraction 2
 ----------------------------------------------------------
 
-* What is (de-)multiplexing? What is a codec?
+* discuss the advantages and limitations of your heuristics
 
-Multiplexing is combining several signals to one, to allow sharing a medium. Afterwards they can be separated into different signals again via demultiplexing.
-
-A codec is a program to encode a signal for transmission, storage or encryption and decode it for playback or editing. For example a analog signal can be converted into a digital signal with a codec.
+lipsum
 
 ---
 
-* In what color space are images usually represented in video files? What color space is usually used for computer images?
+* discuss the advantages and limitations of our simple dominant color model
 
-The YCbCr color space is usually used in video files, whereas the sRGB color space is most commonly used for images.
+lipsum
 
 ----------------------------------------------------------
-Task 2.6: video thumbnail
+Task 3.4: Expose your data in GraphML
 ----------------------------------------------------------
 
-* What is video transcoding?
+* What (type of) layout algorithm do we use for the information visualization in this assignment?
 
-It is the conversion from one encoding to another.
+lipsum
 
 ---
 
-* Briefly describe and compare the video codecs we used in this assignment.
+* What are advantages/disadvantages of the used infovis?
 
-The codecs used in the sample media video files are: indeo3, msmpeg4 v3, cinepak and theora.
-All of them use lossy compression. Cinepak uses vector quantization as its basic algorithm whereas theora uses discrete cosine transformation.
-
----
-
-* How does changing the configuration of the ImageCompare Object affect the thumbnail?
-
-Increasing the threshold reduces the number of frames used in the thumbnail, thus making a shorter video. Reducing it has the opposite effect, to the point where only frames with exactly the same brightness value in all map areas are not included.
-Reducing the size of the map areas increases sensitivity to changes and should result in more frames included in the thumbnail.
-
-
+lipsum
