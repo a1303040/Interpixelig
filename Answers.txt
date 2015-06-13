@@ -74,5 +74,7 @@ Tags are laid out in a radial layout and force functions are used to simulate ph
 
 * What are advantages/disadvantages of the used infovis?
 
-A disadvantage is that a Java applet is used. In our opinion, HTML5/CSS would be way better suited to display the information to users.
+The used infovis was fairly easy to implement.
+
+A disadvantage is that a Java applet is being used. In our opinion, HTML5/CSS would be way better suited to display the information to users.
 It would also offer support for mobile devices which is becoming increasingly important.
